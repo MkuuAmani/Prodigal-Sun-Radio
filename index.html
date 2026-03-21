@@ -18,17 +18,19 @@ body{
 
 /* CONTAINER */
 .player{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  max-width:600px;
-  width:95%;
-  margin:auto;
+  max-width:700px;
+  width:100%;
 }
 
 /* HEADINGS */
 h1{
   font-size:40px;
   margin-bottom:10px;
-  letter-spacing:2px;
 }
 
 h2{
@@ -37,15 +39,36 @@ h2{
   margin-bottom:20px;
 }
 
+/* COVER */
+#cover{
+  width:600px;
+  height:600px;
+  max-width:90vw;
+  max-height:90vw;
+  object-fit:cover;
+  border-radius:50%;
+  margin:0 auto 20px auto;
+  display:block;
+  box-shadow:0 0 35px rgba(255,215,0,0.7);
+  transition:0.5s;
+}
+
+/* TRACK */
+#track{
+  font-size:22px;
+  margin-bottom:10px;
+  min-height:40px;
+}
+
 /* LIVE BADGE */
 .live{
-  display:inline-block;
+  margin-top:5px;
+  margin-bottom:20px;
   padding:6px 16px;
   border-radius:20px;
   background:#300;
   color:#ff4d4d;
   font-size:16px;
-  margin-bottom:20px;
   box-shadow:0 0 10px red;
   animation:pulse 1.5s infinite;
 }
@@ -56,29 +79,22 @@ h2{
   100%{box-shadow:0 0 5px red}
 }
 
-/* COVER ART */
-#cover{
-  width:300px;
-  height:300px;
-  object-fit:cover;
-  border-radius:50%;
-  margin-bottom:20px;
-  box-shadow:0 0 35px rgba(255,215,0,0.7);
-  transition:opacity 0.5s ease, transform 0.5s ease;
+/* PLAY BUTTON */
+#playBtn{
+  background:#000;
+  color:#fff;
+  border:2px solid #FFD700;
+  padding:14px 30px;
+  font-size:20px;
+  border-radius:30px;
+  cursor:pointer;
+  margin-top:10px;
+  transition:0.3s;
 }
 
-/* TRACK */
-#track{
-  font-size:22px;
-  margin-bottom:20px;
-  min-height:40px;
-  transition:opacity 0.4s ease;
-}
-
-/* AUDIO PLAYER */
-audio{
-  width:100%;
-  margin-top:15px;
+#playBtn:hover{
+  background:#FFD700;
+  color:#000;
 }
 
 /* WAVEFORM */
@@ -87,7 +103,7 @@ canvas{
   height:150px;
   background:#000;
   border-radius:10px;
-  margin-top:15px;
+  margin-top:20px;
 }
 </style>
 </head>
@@ -98,24 +114,38 @@ canvas{
   <h1>Mkuu Amani</h1>
   <h2>Prodigal Sun Radio</h2>
 
-  <div class="live">● LIVE</div>
-
   <img id="cover" src="https://i.imgur.com/QPevqGi.png">
 
   <div id="track">Loading...</div>
 
-  <audio id="audio" controls>
-    <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
-  </audio>
+  <div class="live">● LIVE</div>
+
+  <button id="playBtn">▶ PLAY</button>
 
   <canvas id="wave"></canvas>
 </div>
 
-<script>
-// ================= STREAM =================
-const audio = document.getElementById("audio");
+<audio id="audio">
+  <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
+</audio>
 
-// ================= NOW PLAYING =================
+<script>
+// AUDIO
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+
+// PLAY BUTTON
+playBtn.addEventListener("click", () => {
+  if(audio.paused){
+    audio.play();
+    playBtn.innerText = "⏸ PAUSE";
+  } else {
+    audio.pause();
+    playBtn.innerText = "▶ PLAY";
+  }
+});
+
+// NOW PLAYING
 const API = "https://api.radioking.io/widget/radio/the-channel-x/track/current";
 
 let currentTrack = "";
@@ -158,7 +188,7 @@ setInterval(updateTrack, 10000);
 updateTrack();
 
 
-// ================= WAVEFORM (USER ACTIVATED) =================
+// WAVEFORM
 let ctx, analyser, source;
 const canvas = document.getElementById("wave");
 const canvasCtx = canvas.getContext("2d");
@@ -221,7 +251,7 @@ function initAudio(){
   draw();
 }
 
-// unlock audio + waveform on interaction
+// unlock audio + waveform
 document.body.addEventListener("click", () => {
   initAudio();
   if(ctx) ctx.resume();
