@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prodigal Sun Radio</title>
+<title>Mkuu Amani Radio</title>
 
 <style>
 body{
@@ -37,6 +37,16 @@ h2{
   margin-bottom:20px;
 }
 
+/* PROFILE PIC */
+#profilePic{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  display:block;
+  margin:0 auto 15px auto;
+  box-shadow:0 0 20px rgba(255,215,0,0.5);
+}
+
 /* LIVE BADGE */
 .live{
   display:inline-block;
@@ -60,7 +70,7 @@ h2{
 #cover{
   width:600px;
   height:600px;
-  max-width:90vw;   /* keeps it responsive on mobile */
+  max-width:90vw;
   max-height:90vw;
   object-fit:cover;
   border-radius:50%;
@@ -73,12 +83,12 @@ h2{
 /* TRACK */
 #track{
   font-size:32px;
-  margin-bottom:20px;
+  margin-bottom:10px;
   min-height:40px;
   transition:opacity 0.4s ease;
 }
 
-/* AUDIO PLAYER */
+/* AUDIO PLAYER (inverted) */
 audio{
   width:100%;
   margin-top:15px;
@@ -99,19 +109,26 @@ canvas{
 <body>
 
 <div class="player">
+  <!-- Profile Picture -->
+  <img id="profilePic" src="YOUR-PROFILE-IMAGE-URL" alt="Mkuu Amani">
+
+  <!-- Page Title -->
   <h1>Mkuu Amani</h1>
   <h2>Prodigal Sun Radio</h2>
 
-  <div class="live">● LIVE</div>
-
+  <!-- Cover -->
   <img id="cover" src="https://i.imgur.com/QPevqGi.png">
 
+  <!-- Track & LIVE badge -->
   <div id="track">Loading...</div>
+  <div class="live">● LIVE</div>
 
+  <!-- Audio -->
   <audio id="audio" controls>
     <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
   </audio>
 
+  <!-- Waveform -->
   <canvas id="wave"></canvas>
 </div>
 
