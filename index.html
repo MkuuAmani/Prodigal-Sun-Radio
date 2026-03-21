@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prodigal Sun Radio</title>
+<title>Mkuu Amani Radio</title>
 
 <style>
 body{
@@ -11,7 +11,7 @@ body{
   font-family:Arial, sans-serif;
   color:#FFD700;
   display:flex;
-  justify-content:center;
+  flex-direction:column;
   align-items:center;
   min-height:100vh;
 }
@@ -22,6 +22,7 @@ body{
   max-width:600px;
   width:95%;
   margin:auto;
+  flex:1;
 }
 
 /* HEADINGS */
@@ -49,6 +50,13 @@ h2{
   display:block;
   box-shadow:0 0 35px rgba(255,215,0,0.7);
   transition:opacity 0.5s ease, transform 0.5s ease;
+  animation: pulseCover 2s infinite;
+}
+
+@keyframes pulseCover{
+  0% { transform: scale(1); box-shadow:0 0 35px rgba(255,215,0,0.7); }
+  50% { transform: scale(1.03); box-shadow:0 0 50px rgba(255,215,0,0.9); }
+  100% { transform: scale(1); box-shadow:0 0 35px rgba(255,215,0,0.7); }
 }
 
 /* TRACK */
@@ -84,6 +92,52 @@ audio{
   margin-top:15px;
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* FOOTER TICKER */
+.psr-ticker{
+  display:flex;
+  align-items:center;
+  background:#0b0b0b;
+  border-radius:14px;
+  padding:10px 16px;
+  overflow:hidden;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  width:95%;
+  margin:20px auto 10px auto;
+}
+
+.psr-label{
+  font-size:18px;
+  font-weight:700;
+  margin-right:14px;
+  color:#f7c873;
+  white-space:nowrap;
+}
+
+.psr-wrap{
+  flex:1;
+  overflow:hidden;
+}
+
+.psr-move{
+  display:inline-flex;
+  gap:56px;
+  white-space:nowrap;
+}
+
+.psr-move span{
+  font-size:18px;
+  color:#f7c873;
+}
+
+@keyframes scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+.psr-ticker:hover .psr-move{
+  animation-play-state:paused;
+}
 </style>
 </head>
 
@@ -101,6 +155,14 @@ audio{
   <audio id="audio" controls>
     <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
   </audio>
+</div>
+
+<!-- FOOTER SCROLLING TICKER -->
+<div class="psr-ticker">
+  <div class="psr-label">PSR LIVE</div>
+  <div class="psr-wrap">
+    <div class="psr-move" id="psrTicker"></div>
+  </div>
 </div>
 
 <script>
@@ -129,16 +191,6 @@ async function updateTrack(){
         trackEl.innerText = newTrack;
         trackEl.style.opacity = 1;
       },200);
-
-      const cover = document.getElementById("cover");
-      cover.style.opacity = 0.3;
-      cover.style.transform = "scale(0.95)";
-
-      setTimeout(()=>{
-        cover.src = data.cover || "https://i.imgur.com/QPevqGi.png";
-        cover.style.opacity = 1;
-        cover.style.transform = "scale(1)";
-      },300);
     }
 
   }catch{
@@ -148,6 +200,124 @@ async function updateTrack(){
 
 setInterval(updateTrack, 10000);
 updateTrack();
+
+// =========================
+// FOOTER TICKER JS
+// =========================
+const ticker = document.getElementById("psrTicker");
+const scrollSpeed = 55; // px per second
+const LISTENER_API="https://script.google.com/macros/s/AKfycbwjgiFCMzDHYdbTUUtmkSdML5oXDIL1zmH5oOQ-g2s49FO2-U-LRs7fGja76dfy7yli_Q/exec";
+
+let listeners=[];
+let listenerIndex=0;
+let welcomeIndex=0;
+
+const cities=[
+"Walsall","Birmingham","London","Wolverhampton","Coventry","Nottingham","Cannock","Lagos","Elba","Poole","Sutton","Glasgow","Sterling","Tipton","Paris","Nice","Toxteth","Leeds","Turin","Bristol",
+"Toronto","Kingston","New York"
+];
+
+const stationMessages=[
+"🎧 You're listening to Prodigal Sun Radio — Rise With The Sun",
+"🔥 Peace Love & House Show",
+"☀️ Sunny Galaxy - lighting up the airwaves",
+"🎶 Afro House • EDM • Dance • House •Reggae",
+"🌍 Independent radio supporting global music culture"
+];
+
+const welcomeMessages=[
+"🎵 Welcome to Prodigal Sun Radio! Sign the guest book 🌍",
+"💛 Let the world know you're listening!",
+"🔥 Join the global listener roll call!",
+"☀️ Share your city and spread the love!"
+];
+
+const flags={
+"UK":"🇬🇧","UNITED KINGDOM":"🇬🇧",
+"USA":"🇺🇸","CANADA":"🇨🇦",
+"JAMAICA":"🇯🇲","TRINIDAD":"🇹🇹","BARBADOS":"🇧🇧","GRENADA":"🇬🇩",
+"SAINT LUCIA":"🇱🇨","ST LUCIA":"🇱🇨","BAHAMAS":"🇧🇸",
+"CUBA":"🇨🇺","HAITI":"🇭🇹","DOMINICAN":"🇩🇴",
+"GHANA":"🇬🇭","NIGERIA":"🇳🇬","SOUTH AFRICA":"🇿🇦","KENYA":"🇰🇪",
+"ZIMBABWE":"🇿🇼","UGANDA":"🇺🇬","ETHIOPIA":"🇪🇹","SENEGAL":"🇸🇳",
+"GERMANY":"🇩🇪","FRANCE":"🇫🇷","SPAIN":"🇪🇸","ITALY":"🇮🇹",
+"BRAZIL":"🇧🇷","AUSTRALIA":"🇦🇺"
+};
+
+function getFlag(loc){
+  loc=loc.toUpperCase();
+  for(let k in flags){
+    if(loc.includes(k)) return flags[k];
+  }
+  return "🌍";
+}
+
+async function loadListeners(){
+  try{
+    const res=await fetch(LISTENER_API);
+    listeners=await res.json();
+  }catch(e){ console.log("Listener load error",e); }
+}
+setInterval(loadListeners,60000);
+loadListeners();
+
+async function getNowPlaying(){
+  try{
+    const res=await fetch(API,{cache:"no-store"});
+    const data=await res.json();
+    const artist=data.artist||"Unknown Artist";
+    const title=data.title||"Unknown Title";
+    return `🎵 Now Playing: ${artist} – ${title}`;
+  }catch(e){ return "🎵 Music streaming live on Prodigal Sun Radio"; }
+}
+
+function getShoutout(){
+  const city=cities[Math.floor(Math.random()*cities.length)];
+  return `💛 Shoutout to listeners in ${city}`;
+}
+
+function getListener(){
+  if(listeners.length===0) return null;
+  const l=listeners[listenerIndex];
+  listenerIndex=(listenerIndex+1)%listeners.length;
+  return `${l.flag} ${l.name} listening from ${l.location}`;
+}
+
+function getWelcome(){
+  const msg=welcomeMessages[welcomeIndex];
+  welcomeIndex=(welcomeIndex+1)%welcomeMessages.length;
+  return msg;
+}
+
+async function buildTicker(){
+  ticker.innerHTML="";
+
+  addToTicker(await getNowPlaying());
+  addToTicker(getShoutout());
+  stationMessages.forEach(msg=>addToTicker(msg));
+
+  if(listeners.length>0){
+    addToTicker(getListener());
+  } else {
+    addToTicker(getWelcome());
+  }
+
+  ticker.innerHTML+=ticker.innerHTML;
+
+  const move=document.querySelector(".psr-move");
+  const totalWidth=move.scrollWidth;
+  const duration=totalWidth/scrollSpeed;
+  move.style.animation=`scroll ${duration}s linear infinite`;
+}
+
+function addToTicker(text){
+  const span=document.createElement("span");
+  span.textContent=text;
+  ticker.appendChild(span);
+}
+
+buildTicker();
+setInterval(buildTicker,1200000);
 </script>
 
 </body>
