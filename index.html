@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prodigal Sun Radio</title>
+<title>Mkuu Amani Radio</title>
 
 <style>
 body{
@@ -49,7 +49,7 @@ h2{
   margin:0 auto 20px auto;
   display:block;
   box-shadow:0 0 35px rgba(255,215,0,0.7);
-  transition:opacity 0.5s ease, transform 0.5s ease;
+  transition:opacity 0.5s ease;
   animation: pulseCover 2s infinite;
 }
 
@@ -191,6 +191,12 @@ async function updateTrack(){
         trackEl.innerText = newTrack;
         trackEl.style.opacity = 1;
       },200);
+
+      // Only update the image src — do NOT touch transform/opacity
+      const cover = document.getElementById("cover");
+      setTimeout(()=>{
+        cover.src = data.cover || "https://i.imgur.com/QPevqGi.png";
+      }, 300);
     }
 
   }catch{
@@ -239,7 +245,7 @@ const flags={
 "SAINT LUCIA":"🇱🇨","ST LUCIA":"🇱🇨","BAHAMAS":"🇧🇸",
 "CUBA":"🇨🇺","HAITI":"🇭🇹","DOMINICAN":"🇩🇴",
 "GHANA":"🇬🇭","NIGERIA":"🇳🇬","SOUTH AFRICA":"🇿🇦","KENYA":"🇰🇪",
-"ZIMBABWE":"🇿🇼","UGANDA":"🇺🇬","ETHIOPIA":"🇪🇹","SENEGAL":"🇸🇳",
+"ZIMBABWE":"🇿ŵ","UGANDA":"🇺🇬","ETHIOPIA":"🇪🇹","SENEGAL":"🇸🇳",
 "GERMANY":"🇩🇪","FRANCE":"🇫🇷","SPAIN":"🇪🇸","ITALY":"🇮🇹",
 "BRAZIL":"🇧🇷","AUSTRALIA":"🇦🇺"
 };
