@@ -13,38 +13,39 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
 }
 
 /* CONTAINER */
 .player{
   text-align:center;
-  max-width:420px;
-  width:90%;
+  max-width:600px;
+  width:95%;
+  margin:auto;
 }
 
 /* HEADINGS */
 h1{
-  font-size:26px;
-  margin-bottom:5px;
+  font-size:40px;
+  margin-bottom:10px;
   letter-spacing:2px;
 }
 
 h2{
-  font-size:13px;
-  opacity:0.7;
-  margin-bottom:15px;
+  font-size:18px;
+  opacity:0.8;
+  margin-bottom:20px;
 }
 
 /* LIVE BADGE */
 .live{
   display:inline-block;
-  padding:4px 10px;
+  padding:6px 16px;
   border-radius:20px;
   background:#300;
   color:#ff4d4d;
-  font-size:12px;
-  margin-bottom:15px;
+  font-size:16px;
+  margin-bottom:20px;
   box-shadow:0 0 10px red;
   animation:pulse 1.5s infinite;
 }
@@ -57,29 +58,36 @@ h2{
 
 /* COVER ART */
 #cover{
-  width:220px;
-  height:220px;
+  width:300px;
+  height:300px;
   object-fit:cover;
   border-radius:50%;
-  margin-bottom:15px;
+  margin-bottom:20px;
   box-shadow:0 0 35px rgba(255,215,0,0.7);
   transition:opacity 0.5s ease, transform 0.5s ease;
 }
 
 /* TRACK */
 #track{
-  font-size:18px;
-  margin-bottom:15px;
+  font-size:22px;
+  margin-bottom:20px;
   min-height:40px;
   transition:opacity 0.4s ease;
+}
+
+/* AUDIO PLAYER */
+audio{
+  width:100%;
+  margin-top:15px;
 }
 
 /* WAVEFORM */
 canvas{
   width:100%;
-  height:120px;
+  height:150px;
   background:#000;
   border-radius:10px;
+  margin-top:15px;
 }
 </style>
 </head>
@@ -96,12 +104,12 @@ canvas{
 
   <div id="track">Loading...</div>
 
+  <audio id="audio" controls>
+    <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
+  </audio>
+
   <canvas id="wave"></canvas>
 </div>
-
-<audio id="audio" crossorigin="anonymous" autoplay>
-  <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
-</audio>
 
 <script>
 // ================= STREAM =================
@@ -122,7 +130,6 @@ async function updateTrack(){
     if(newTrack !== currentTrack){
       currentTrack = newTrack;
 
-      // fade text
       const trackEl = document.getElementById("track");
       trackEl.style.opacity = 0;
 
@@ -131,7 +138,6 @@ async function updateTrack(){
         trackEl.style.opacity = 1;
       },200);
 
-      // update cover with animation
       const cover = document.getElementById("cover");
       cover.style.opacity = 0.3;
       cover.style.transform = "scale(0.95)";
@@ -152,68 +158,73 @@ setInterval(updateTrack, 10000);
 updateTrack();
 
 
-// ================= REAL WAVEFORM =================
-const ctx = new AudioContext();
-const analyser = ctx.createAnalyser();
-const source = ctx.createMediaElementSource(audio);
-
-source.connect(analyser);
-analyser.connect(ctx.destination);
-
-analyser.fftSize = 2048;
-
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
+// ================= WAVEFORM (USER ACTIVATED) =================
+let ctx, analyser, source;
 const canvas = document.getElementById("wave");
 const canvasCtx = canvas.getContext("2d");
 
 function resize(){
   canvas.width = canvas.clientWidth;
-  canvas.height = 120;
+  canvas.height = 150;
 }
 resize();
 window.addEventListener("resize", resize);
 
-function draw(){
-  requestAnimationFrame(draw);
+function initAudio(){
+  if(ctx) return;
 
-  analyser.getByteTimeDomainData(dataArray);
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = ctx.createAnalyser();
+  source = ctx.createMediaElementSource(audio);
 
-  canvasCtx.fillStyle = "#000";
-  canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+  source.connect(analyser);
+  analyser.connect(ctx.destination);
 
-  canvasCtx.lineWidth = 2;
-  canvasCtx.strokeStyle = "#FFD700";
+  analyser.fftSize = 2048;
 
-  canvasCtx.beginPath();
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
 
-  let sliceWidth = canvas.width / bufferLength;
-  let x = 0;
+  function draw(){
+    requestAnimationFrame(draw);
 
-  for(let i = 0; i < bufferLength; i++){
-    let v = dataArray[i] / 128.0;
-    let y = v * canvas.height / 2;
+    analyser.getByteTimeDomainData(dataArray);
 
-    if(i === 0){
-      canvasCtx.moveTo(x, y);
-    } else {
-      canvasCtx.lineTo(x, y);
+    canvasCtx.fillStyle = "#000";
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvasCtx.lineWidth = 2;
+    canvasCtx.strokeStyle = "#FFD700";
+
+    canvasCtx.beginPath();
+
+    let sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+
+    for(let i = 0; i < bufferLength; i++){
+      let v = dataArray[i] / 128.0;
+      let y = v * canvas.height / 2;
+
+      if(i === 0){
+        canvasCtx.moveTo(x, y);
+      } else {
+        canvasCtx.lineTo(x, y);
+      }
+
+      x += sliceWidth;
     }
 
-    x += sliceWidth;
+    canvasCtx.lineTo(canvas.width, canvas.height / 2);
+    canvasCtx.stroke();
   }
 
-  canvasCtx.lineTo(canvas.width, canvas.height / 2);
-  canvasCtx.stroke();
+  draw();
 }
 
-draw();
-
-
-// ================= AUTOPLAY FIX =================
+// unlock audio + waveform on interaction
 document.body.addEventListener("click", () => {
-  ctx.resume();
+  initAudio();
+  if(ctx) ctx.resume();
 });
 </script>
 
