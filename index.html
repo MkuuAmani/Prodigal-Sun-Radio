@@ -16,10 +16,10 @@ body{
   min-height:100vh;
   overflow:hidden;
 
-  /* BACKGROUND IMAGE */
+  /* YOUR BRAND BACKGROUND */
   background:
     linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.95)),
-    url("images/mkuu-amani-brand-art.png") center/cover no-repeat fixed;
+    url("images/mkuu-amani.png") center/cover no-repeat fixed;
 }
 
 /* BACKGROUND GLOW */
@@ -31,7 +31,8 @@ body{
   height:800px;
   transform:translate(-50%,-50%);
   background:radial-gradient(circle, rgba(255,215,0,0.2), rgba(255,140,0,0.1), transparent 70%);
-  filter:blur(80px);
+  filter:blur(100px);
+  opacity:0.6;
   z-index:-1;
   animation: glowMove 8s ease-in-out infinite;
 }
@@ -39,7 +40,7 @@ body{
 @keyframes glowMove{
   0%{
     transform:translate(-50%,-50%) scale(1);
-    opacity:0.7;
+    opacity:0.6;
   }
   50%{
     transform:translate(-50%,-55%) scale(1.1);
@@ -47,7 +48,7 @@ body{
   }
   100%{
     transform:translate(-50%,-50%) scale(1);
-    opacity:0.7;
+    opacity:0.6;
   }
 }
 
@@ -56,6 +57,7 @@ body{
   text-align:center;
   max-width:600px;
   width:95%;
+  backdrop-filter: blur(6px);
 }
 
 /* HEADINGS */
@@ -67,11 +69,11 @@ h1{
 
 h2{
   font-size:18px;
-  opacity:0.8;
+  opacity:0.85;
   margin-bottom:20px;
 }
 
-/* COVER ART */
+/* COVER ART (TRACK ARTWORK) */
 #cover{
   width:600px;
   height:600px;
@@ -82,13 +84,13 @@ h2{
   margin:0 auto 20px auto;
   display:block;
   box-shadow:0 0 35px rgba(255,215,0,0.7);
-  animation: pulseCover 2.5s infinite ease-in-out;
+  animation: pulseCover 3s infinite ease-in-out;
 }
 
 @keyframes pulseCover{
-  0% { transform: scale(1); box-shadow:0 0 35px rgba(255,215,0,0.6); }
-  50% { transform: scale(1.04); box-shadow:0 0 60px rgba(255,215,0,1); }
-  100% { transform: scale(1); box-shadow:0 0 35px rgba(255,215,0,0.6); }
+  0% { transform: scale(1); box-shadow:0 0 30px rgba(255,215,0,0.5); }
+  50% { transform: scale(1.03); box-shadow:0 0 55px rgba(255,215,0,1); }
+  100% { transform: scale(1); box-shadow:0 0 30px rgba(255,215,0,0.5); }
 }
 
 /* TRACK */
@@ -129,27 +131,28 @@ audio{
 .tagline{
   margin-top:25px;
   font-size:18px;
-  opacity:0.85;
+  opacity:0.9;
 }
 
 /* FOOTER */
 .footer{
   margin-top:20px;
   font-size:14px;
-  opacity:0.5;
+  opacity:0.6;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BACKGROUND GLOW -->
+<!-- GLOW -->
 <div class="bg-glow"></div>
 
 <div class="player">
   <h1>Mkuu Amani</h1>
   <h2>Prodigal Sun Radio</h2>
 
+  <!-- TRACK COVER (STILL DYNAMIC) -->
   <img id="cover" src="https://i.imgur.com/QPevqGi.png">
 
   <div id="track">Loading...</div>
@@ -160,7 +163,7 @@ audio{
   </audio>
 
   <div class="tagline">
-    🌍  Afro House • House • Drum&Bass • EDM • Dance • Reggae  🌍 
+    🌍 Afro House • House • Drum & Bass • EDM • Dance • Reggae 🌍
   </div>
 
   <div class="footer">
@@ -193,6 +196,7 @@ async function updateTrack(){
       },200);
 
       const cover = document.getElementById("cover");
+
       setTimeout(()=>{
         cover.src = data.cover || "https://i.imgur.com/QPevqGi.png";
       },300);
