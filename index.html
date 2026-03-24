@@ -7,6 +7,7 @@
 <style>
 body{
   margin:0;
+  background:radial-gradient(circle at top, #0a1a2f, #02060d);
   font-family:Arial, sans-serif;
   color:#FFD700;
   display:flex;
@@ -15,14 +16,9 @@ body{
   justify-content:center;
   min-height:100vh;
   overflow:hidden;
-
-  /* YOUR BRAND BACKGROUND */
-  background:
-    linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.95)),
-    url("images/mkuu-amani.png") center/cover no-repeat fixed;
 }
 
-/* BACKGROUND GLOW */
+/* GLOW */
 .bg-glow{
   position:fixed;
   top:50%;
@@ -30,7 +26,7 @@ body{
   width:800px;
   height:800px;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle, rgba(255,215,0,0.2), rgba(255,140,0,0.1), transparent 70%);
+  background:radial-gradient(circle, rgba(255,215,0,0.15), rgba(0,100,255,0.1), transparent 70%);
   filter:blur(100px);
   opacity:0.6;
   z-index:-1;
@@ -57,7 +53,14 @@ body{
   text-align:center;
   max-width:600px;
   width:95%;
-  backdrop-filter: blur(6px);
+}
+
+/* BRAND IMAGE */
+.brand{
+  width:220px;
+  max-width:60%;
+  margin-bottom:15px;
+  filter: drop-shadow(0 0 20px rgba(255,215,0,0.6));
 }
 
 /* HEADINGS */
@@ -73,7 +76,7 @@ h2{
   margin-bottom:20px;
 }
 
-/* COVER ART (TRACK ARTWORK) */
+/* TRACK COVER */
 #cover{
   width:600px;
   height:600px;
@@ -101,7 +104,7 @@ h2{
   transition:opacity 0.4s ease;
 }
 
-/* LIVE BADGE */
+/* LIVE */
 .live{
   display:inline-block;
   padding:6px 16px;
@@ -120,7 +123,7 @@ h2{
   100%{box-shadow:0 0 5px red}
 }
 
-/* AUDIO PLAYER */
+/* AUDIO */
 audio{
   width:100%;
   margin-top:15px;
@@ -145,14 +148,16 @@ audio{
 
 <body>
 
-<!-- GLOW -->
 <div class="bg-glow"></div>
 
 <div class="player">
+
+  <!-- YOUR BRAND IMAGE -->
+  <img src="images/mkuu-amani.png" class="brand">
+
   <h1>Mkuu Amani</h1>
   <h2>Prodigal Sun Radio</h2>
 
-  <!-- TRACK COVER (STILL DYNAMIC) -->
   <img id="cover" src="https://i.imgur.com/QPevqGi.png">
 
   <div id="track">Loading...</div>
@@ -169,10 +174,10 @@ audio{
   <div class="footer">
     Rise With The Sun ☀️
   </div>
+
 </div>
 
 <script>
-// ================= NOW PLAYING =================
 const API = "https://api.radioking.io/widget/radio/the-channel-x/track/current";
 
 let currentTrack = "";
