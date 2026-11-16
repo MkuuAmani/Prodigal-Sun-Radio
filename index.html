@@ -2,216 +2,769 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prodigal Sun Radio</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSR Broadcast Console</title>
+<meta property="og:title" content="Prodigal Sun Radio - Reach The Station">
+<meta property="og:description" content="Where the mix never sleeps. Live house, dance and reggae from Prodigal Sun Radio — global DJs, no dead air, one station running around the clock.">
+<meta property="og:image" content="https://static.wixstatic.com/media/4657a4_ec25b8508b3144d7b60f269f9af095df~mv2.png">
+<meta property="og:url" content="https://mkuu-amani.github.io/reach-the-station/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prodigal Sun Radio">
+<meta name="twitter:description" content="Where the mix never sleeps. House, dance and reggae on Prodigal Sun Radio, kept moving by DJs across the world.">
+<meta name="twitter:image" content="https://static.wixstatic.com/media/4657a4_ec25b8508b3144d7b60f269f9af095df~mv2.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  background:radial-gradient(circle at top, #0a1a2f, #02060d);
-  font-family:Arial, sans-serif;
-  color:#FFD700;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  min-height:100vh;
-  overflow:hidden;
+* { box-sizing: border-box; font-family: 'Orbitron', sans-serif !important; }
+:root {
+    --bg-deep: #05050a; --bg-panel: rgba(8, 10, 20, 0.92); --cyan: #00c2ff; --blue: #0066ff;
+    --magenta: #ff00cc; --text: #ffffff; --text-soft: rgba(255,255,255,0.75);
+    --border: rgba(0,194,255,0.22); --glow: rgba(0,194,255,0.35); --glass: rgba(255,255,255,0.06);
+}
+body { margin: 0; background: var(--bg-deep); color: var(--text); overflow-x: hidden; }
+#bgVideo { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -5; filter: brightness(0.9) saturate(1.4) contrast(1.1); transform: scale(1.05); }
+.overlay { position: fixed; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(0,120,255,0.40), transparent 40%), radial-gradient(circle at 80% 30%, rgba(0,180,255,0.30), transparent 45%), radial-gradient(circle at 50% 90%, rgba(0,80,255,0.25), transparent 55%), linear-gradient(180deg, rgba(0,90,255,0.20), rgba(0,0,40,0.55)); z-index: -4; }
+.topbar { position: sticky; top: 0; width: 100%; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; background: rgba(5,5,12,0.85); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); z-index: 10; font-size: 12px; letter-spacing: 1.5px; color: var(--text-soft); margin-bottom: 12px; }
+.live-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #ff003c; box-shadow: 0 0 10px #ff003c; animation: livePulse 1.4s infinite; }
+@keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+.container { position: relative; z-index: 2; max-width: 1100px; margin: 40px auto; padding: 32px 20px 40px; background: rgba(8,10,18,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(0,194,255,0.15); border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+.pulsating-banner { width: 100%; max-height: 560px; min-height: 380px; border-radius: 14px; overflow: hidden; position: relative; margin-bottom: 32px; box-shadow: 0 15px 40px rgba(0,100,255,0.6); animation: pulse-glow 3.5s ease-in-out infinite; display: flex; align-items: center; justify-content: center; background: #000; }
+.pulsating-banner img { width: 100%; height: auto; max-height: 100%; display: block; object-fit: contain; }
+@keyframes pulse-glow { 0%,100% { box-shadow: 0 15px 40px rgba(0,100,255,0.6); } 50% { box-shadow: 0 20px 70px rgba(0,180,255,0.9); } }
+.app { width: 100%; min-height: 85dvh; display: flex; flex-direction: column; gap: 20px; }
+.header { text-align: center; margin: 0; padding-top: 10px; }
+.header h1 { margin: 0; font-size: 56px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(90deg,#0066ff,#00c2ff,#ff00cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.header h2 { margin-top: 6px; font-size: 13px; letter-spacing: 3px; color: var(--text-soft); }
+.console { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+.panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: 0 0 30px rgba(0,120,255,0.12); color: var(--text); }
+.video-panel { position: relative; overflow: hidden; min-height: 560px; border: 1px solid var(--border); box-shadow: 0 0 35px rgba(0,180,255,0.18); }
+.panel-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.panel-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.72)), radial-gradient(circle at 30% 20%,rgba(0,120,255,0.25),transparent 60%); z-index: 1; }
+.panel-content { position: relative; z-index: 2; padding: 28px 24px 32px; display: flex; flex-direction: column; align-items: center; }
+.now-playing { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; margin-bottom: 32px; width: 100%; }
+#cover { width: 92%; max-width: 780px; height: auto; aspect-ratio: 1 / 1; border-radius: 22px; object-fit: cover; box-shadow: 0 0 50px rgba(0,180,255,.65), 0 20px 50px rgba(0,0,0,.5); animation: albumPulse 3.2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes albumPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.artist { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #00c2ff; text-shadow: 0 0 14px rgba(0,194,255,.45); line-height: 1.2; }
+.title { font-size: clamp(1.6rem, 5vw, 2.3rem); font-weight: 800; color: #fff; line-height: 1.15; margin-top: 6px; }
+.sub { font-size: 14px; color: rgba(255,255,255,0.75); margin-top: 8px; letter-spacing: 0.5px; }
+.share-trigger { width: min(100%, 360px) !important; margin: 16px auto 0 !important; }
+#dj-box { --dj-color: #FFD700; width: 100%; max-width: 780px; margin: 0 auto 28px; padding: 22px 24px; border-radius: 18px; background: linear-gradient(145deg, rgba(0,0,0,.78), rgba(10,10,15,.92)); border: 1px solid var(--dj-color); box-shadow: 0 0 25px var(--dj-color), inset 0 0 25px rgba(255,255,255,.06); transition: border-color .6s ease, box-shadow .6s ease; text-align: center; }
+.dj-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.65); }
+#dj-name { margin-top: 8px; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; color: var(--dj-color); text-shadow: 0 0 10px var(--dj-color), 0 0 25px var(--dj-color); transition: color .6s ease, text-shadow .6s ease; }
+#dj-desc { margin-top: 10px; color: #fff; font-size: 14px; line-height: 1.5; }
+#dj-status { display: inline-block; margin-top: 12px; padding: 6px 14px; border-radius: 20px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+#dj-status.on-air { background: rgba(255,0,60,.15); color: #ff003c; box-shadow: 0 0 15px rgba(255,0,60,.35); }
+.stream {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.message-panel input, .message-panel textarea { width: 100%; padding: 14px; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(10,12,20,0.9); color: #fff; font-size: 14px; }
+.message-panel h3 { color: var(--cyan); margin-top: 0; font-size: 20px; }
+button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--magenta)); border: none; border-radius: 10px; font-weight: 800; cursor: pointer; color: #fff; font-size: 16px; }
+.psr-live-panel { max-width: 780px; margin: 0 auto; padding: 36px 28px; border-radius: 20px; background: linear-gradient(180deg, #080a14, #05050a); border: 1px solid var(--border); box-shadow: 0 0 40px rgba(0,194,255,0.18), 0 0 20px rgba(0,100,255,0.12); text-align: center; color: var(--text); letter-spacing: 0.04em; transition: box-shadow 0.4s ease; }
+.psr-live-panel.flash { animation: submitFlash 1.2s ease-out; }
+@keyframes submitFlash { 0% { box-shadow: 0 0 70px rgba(0,217,255,0.6), 0 0 50px rgba(0,194,255,0.4); transform: scale(1); } 40% { transform: scale(1.015); } 100% { box-shadow: 0 0 40px rgba(0,194,255,0.18), 0 0 20px rgba(0,100,255,0.12); transform: scale(1); } }
+#digits { font-size: 82px; font-weight: 800; color: var(--cyan); text-shadow: 0 0 25px var(--glow); margin-bottom: 4px; line-height: 1; }
+#seconds { font-size: 26px; opacity: .85; color: var(--text-soft); margin-bottom: 8px; }
+.psr-date { font-size: 18px; opacity: .75; margin-top: 6px; color: var(--text-soft); }
+.psr-live { margin-top: 14px; font-size: 13px; letter-spacing: .3em; color: var(--text-soft); }
+.psr-world { margin-top: 36px; margin-bottom: 28px; }
+.psr-world h3 { color: var(--cyan); font-size: 22px; margin-bottom: 16px; font-weight: 700; }
+.psr-form { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+.psr-form input { width: 92%; max-width: 560px; padding: 15px 16px; border-radius: 12px; border: 1px solid var(--border); background: #0a0a12; color: #fff; text-align: center; font-size: 16px; }
+.psr-form button { width: 92%; max-width: 560px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--magenta)); border: none; padding: 15px; font-weight: 800; border-radius: 12px; cursor: pointer; font-size: 15px; color: #fff; margin-top: 4px; }
+#psr-display { margin-top: 18px; font-size: 16px; min-height: 28px; }
+.psr-support { margin-top: 32px; }
+.psr-support h3 { font-size: 20px; margin-bottom: 12px; color: var(--cyan); }
+.psr-support a { display: block; width: 92%; max-width: 560px; margin: 10px auto; padding: 14px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--magenta)); color: #fff; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 15px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.psr-support a:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,194,255,0.45); }
+.schedule-section { max-width: 780px; margin: 0 auto; padding: 28px 20px 32px; border-radius: 20px; background: linear-gradient(180deg, #080a14, #05050a); border: 1px solid var(--border); box-shadow: 0 0 40px rgba(0,194,255,0.15); color: var(--text); }
+.schedule-section h2 { text-align: center; font-size: clamp(20px, 4vw, 28px); color: var(--cyan); margin: 0 0 18px; letter-spacing: 1px; }
+.day-bar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.day-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(0,194,255,0.25); background: rgba(255,255,255,0.04); color: #fff; cursor: pointer; font-size: 13px; transition: 0.3s ease; width: auto; margin-top: 0; }
+.day-btn.active { background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #000; font-weight: 700; border-color: transparent; }
+.schedule-window { height: 62vh; max-height: 580px; overflow-y: auto; border: 1px solid rgba(0,194,255,0.2); border-radius: 16px; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); padding: 12px; }
+.schedule-window::-webkit-scrollbar { width: 0; }
+.card { display: flex; gap: 18px; padding: 18px; margin: 12px 0; border-radius: 16px; border: 1px solid rgba(0,194,255,0.15); background: rgba(255,255,255,0.04); transition: 0.3s ease; align-items: center; }
+.card.live { border: 2px solid var(--cyan); box-shadow: 0 0 22px rgba(0,194,255,0.55); background: rgba(0,194,255,0.08); }
+.live-badge { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 999px; background: var(--cyan); color: #000; font-size: 11px; font-weight: 700; }
+.cover { width: 100px; height: 100px; border-radius: 14px; object-fit: cover; border: 2px solid rgba(0,194,255,0.5); flex-shrink: 0; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+.card .title { font-size: clamp(15px, 3vw, 19px); font-weight: 700; line-height: 1.25; color: #fff; margin: 0; }
+.subtle { opacity: 0.75; font-size: 13px; }
+.time { color: var(--cyan); font-size: 13px; white-space: nowrap; font-weight: 700; }
+.world-clock-panel { margin-top: 28px; padding: 18px; border-radius: 14px; background: rgba(8,10,18,0.75); backdrop-filter: blur(12px); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.18); color: var(--text); }
+.world-clock-title { font-size: 18px; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px; text-align: center; }
+.clock-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.clock { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 12px; text-align: center; }
+.clock-city { font-size: 12px; letter-spacing: 1.5px; opacity: .75; margin-bottom: 6px; }
+.clock-time { font-size: 20px; font-weight: 800; }
+.social-panel { margin-top: 28px; padding: 24px; border-radius: 14px; background: rgba(8,10,18,0.75); backdrop-filter: blur(12px); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.18); text-align: center; color: var(--text); }
+.social-title { font-size: 20px; font-weight: 800; letter-spacing: 2px; margin-bottom: 20px; }
+.social-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+.social-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; font-weight: 800; color: white; background: linear-gradient(135deg, var(--blue), var(--cyan), var(--magenta)); box-shadow: 0 8px 20px rgba(0,0,0,0.25); transition: transform .3s ease, box-shadow .3s ease; }
+.social-btn:hover { transform: translateY(-6px) scale(1.08); box-shadow: 0 12px 30px rgba(0,180,255,0.55); }
+
+/* Still Becoming card */
+.still-becoming-panel {
+    margin-top: 28px;
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(8,10,18,0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+.still-becoming-panel:hover {
+    box-shadow: 0 12px 40px rgba(0,194,255,0.35);
+    transform: translateY(-3px);
+}
+.still-becoming-panel a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.still-becoming-panel img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 420px;
+}
+.still-becoming-caption {
+    padding: 18px 22px 22px;
+    text-align: center;
+}
+.still-becoming-caption h3 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--cyan);
+}
+.still-becoming-caption p {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--text-soft);
 }
 
-/* GLOW */
-.bg-glow{
-  position:fixed;
-  top:50%;
-  left:50%;
-  width:800px;
-  height:800px;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(circle, rgba(255,215,0,0.15), rgba(0,100,255,0.1), transparent 70%);
-  filter:blur(100px);
-  opacity:0.6;
-  z-index:-1;
-  animation: glowMove 8s ease-in-out infinite;
-}
-
-@keyframes glowMove{
-  0%{
-    transform:translate(-50%,-50%) scale(1);
-    opacity:0.6;
-  }
-  50%{
-    transform:translate(-50%,-55%) scale(1.1);
-    opacity:1;
-  }
-  100%{
-    transform:translate(-50%,-50%) scale(1);
-    opacity:0.6;
-  }
-}
-
-/* CONTAINER */
-.player{
-  text-align:center;
-  max-width:600px;
-  width:95%;
-}
-
-/* BRAND IMAGE */
-.brand{
-  width:220px;
-  max-width:60%;
-  margin-bottom:15px;
-  filter: drop-shadow(0 0 20px rgba(255,215,0,0.6));
-}
-
-/* HEADINGS */
-h1{
-  font-size:42px;
-  margin-bottom:5px;
-  letter-spacing:2px;
-}
-
-h2{
-  font-size:18px;
-  opacity:0.85;
-  margin-bottom:20px;
-}
-
-/* TRACK COVER */
-#cover{
-  width:600px;
-  height:600px;
-  max-width:90vw;
-  max-height:90vw;
-  object-fit:cover;
-  border-radius:50%;
-  margin:0 auto 20px auto;
-  display:block;
-  box-shadow:0 0 35px rgba(255,215,0,0.7);
-  animation: pulseCover 3s infinite ease-in-out;
-}
-
-@keyframes pulseCover{
-  0% { transform: scale(1); box-shadow:0 0 30px rgba(255,215,0,0.5); }
-  50% { transform: scale(1.03); box-shadow:0 0 55px rgba(255,215,0,1); }
-  100% { transform: scale(1); box-shadow:0 0 30px rgba(255,215,0,0.5); }
-}
-
-/* TRACK */
-#track{
-  font-size:28px;
-  margin-bottom:10px;
-  min-height:40px;
-  transition:opacity 0.4s ease;
-}
-
-/* LIVE */
-.live{
-  display:inline-block;
-  padding:6px 16px;
-  border-radius:20px;
-  background:#300;
-  color:#ff4d4d;
-  font-size:16px;
-  margin-bottom:20px;
-  box-shadow:0 0 10px red;
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%{box-shadow:0 0 5px red}
-  50%{box-shadow:0 0 20px red}
-  100%{box-shadow:0 0 5px red}
-}
-
-/* AUDIO */
-audio{
-  width:100%;
-  margin-top:15px;
-  filter: invert(1) hue-rotate(180deg);
-}
-
-/* TAGLINE */
-.tagline{
-  margin-top:25px;
-  font-size:18px;
-  opacity:0.9;
-}
-
-/* FOOTER */
-.footer{
-  margin-top:20px;
-  font-size:14px;
-  opacity:0.6;
-}
+.share-modal { display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.72); padding: 24px 16px; align-items: center; justify-content: center; }
+.share-modal.show { display: flex; }
+.share-card { width: min(92vw, 420px); max-height: 92vh; overflow: auto; background: #0b0d16; border: 1px solid var(--border); border-radius: 18px; }
+.share-card img#sharePreviewImg { display: block; width: 100%; aspect-ratio: 9/16; max-height: 48vh; object-fit: contain; background: #05050a; }
+.share-card .body { padding: 14px 16px 18px; }
+.share-note { margin: 0 0 12px; min-height: 16px; font-size: 12px; color: var(--text-soft); text-align: center; }
+.share-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.share-actions button { margin-top: 0; width: 100%; padding: 12px 8px; font-size: 12px; }
+.share-actions .ghost { background: rgba(255,255,255,.1); }
+@media (min-width: 901px) { #digits { font-size: 90px; } }
+@media (max-width: 900px) { .header h1 { font-size: 38px; line-height: 1; } .video-panel { min-height: 620px; } .clock-grid { grid-template-columns: repeat(2,1fr); } #cover { width: 94%; max-width: 520px; } #digits { font-size: 68px; } }
+@media (max-width: 600px) { .card { flex-direction: column; align-items: flex-start; gap: 14px; } .top-row { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; } .cover { width: 110px; height: 110px; } }
+@media (max-width: 480px) { #cover { width: 96%; max-width: 360px; } .artist { font-size: 1.3rem; } .title { font-size: 1.5rem; } #dj-box { padding: 18px; } .panel-content { padding: 22px 16px 28px; } #digits { font-size: 56px; } .psr-live-panel { padding: 28px 18px; } .schedule-section { padding: 22px 14px 26px; } .psr-form input, .psr-form button, .psr-support a { max-width: 100%; } }
 </style>
 </head>
-
 <body>
-
-<div class="bg-glow"></div>
-
-<div class="player">
-
-  <h1>Mkuu Amani</h1>
-  <h2>Prodigal Sun Radio</h2>
-
-  <img id="cover" src="https://i.imgur.com/QPevqGi.png">
-
-  <div id="track">Loading...</div>
-  <div class="live">● LIVE</div>
-
-  <audio id="audio" controls>
-    <source src="https://listen.radioking.com/radio/443393/stream/497783" type="audio/mpeg">
-  </audio>
-
-  <div class="tagline">
-    🌍 Afro House • House • Drum & Bass • EDM • Dance • Reggae 🌍
-  </div>
-
-  <div class="footer">
-    Rise With The Sun ☀️
-  </div>
-
+<video id="bgVideo" autoplay muted loop playsinline>
+    <source src="https://video.wixstatic.com/video/4657a4_aaaaed5a8c4a4ada90f76bf1ae6ce200/720p/mp4/file.mp4">
+</video>
+<div class="overlay"></div>
+<div class="topbar">
+    <div><span class="live-dot"></span> PSR LIVE BROADCAST</div>
+    <div>PRODIGALSUNRADIO.COM</div>
 </div>
+<div class="container">
+    <div class="pulsating-banner">
+        <img src="https://static.wixstatic.com/media/4657a4_ec25b8508b3144d7b60f269f9af095df~mv2.png" alt="Prodigal Sun Radio Banner">
+    </div>
+    <div class="app">
+        <div class="header">
+            <h1>PRODIGAL SUN RADIO</h1>
+            <h2>LIVE BROADCAST CONSOLE</h2>
+        </div>
+        <div class="console">
+            <div class="panel video-panel">
+                <video class="panel-video" autoplay muted loop playsinline>
+                    <source src="https://video.wixstatic.com/video/4657a4_6eda907b96f946c5a7d5d65d21e9c679/1080p/mp4/file.mp4">
+                </video>
+                <div class="panel-overlay"></div>
+                <div class="panel-content">
+                    <div class="now-playing">
+                        <img id="cover" src="https://i.imgur.com/QPevqGi.png" alt="Currently playing artwork">
+                        <div>
+                            <div id="track">
+                                <div class="artist">Loading...</div>
+                                <div class="title">Please wait</div>
+                            </div>
+                            <div class="sub">Live Studio Feed</div>
+                            <button type="button" class="share-trigger" onclick="sharePSR()">SHARE / DOWNLOAD STORY</button>
+                        </div>
+                    </div>
+                    <div id="dj-box">
+                        <div class="dj-label">PSR DJ SPOTLIGHT</div>
+                        <div id="dj-name">Loading...</div>
+                        <div id="dj-desc"></div>
+                        <div id="dj-status">DJ Spotlight</div>
+                    </div>
+                   <div class="stream">
+  <iframe src="https://player.radioking.io/the-channel-x/?c=%2305050A&c2=%2300C2FF&f=h&i=1&p=0&s=1&alb=1&li=0&popup=1&plc=0&h=undefined&l=100&v=2&fullsize" style="border-radius: 5px; width: 100%; height: 110px; box-shadow: 0 0 12px rgba(0,0,0,0.3);" frameBorder="0"></iframe>
+</div>
+                </div>
+            </div>
+            <div class="panel video-panel message-panel">
+                <video class="panel-video" autoplay muted loop playsinline>
+                    <source src="https://video.wixstatic.com/video/4657a4_ed23124ce0fe4a389be438464a925a0c/720p/mp4/file.mp4">
+                </video>
+                <div class="panel-overlay"></div>
+                <div class="panel-content">
+                    <h3>Send Message to Studio</h3>
+                    <input id="name" placeholder="Your Name">
+                    <textarea id="message" placeholder="Your Message" rows="6"></textarea>
+                    <button onclick="sendMessage()">SEND MESSAGE</button>
+                    <div id="status"></div>
+                </div>
+            </div>
+            <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                <div class="psr-live-panel" id="panel">
+                    <div>
+                        <div id="digits">--:--</div>
+                        <div id="seconds">--</div>
+                        <div class="psr-date" id="date"></div>
+                        <div class="psr-live"><span class="live-dot" style="margin-right:8px;"></span> LIVE</div>
+                    </div>
+                    <div class="psr-world">
+                        <h3>🌍 Sign The Guest Book, Join Our Family of Listeners Listed Below & Get a Shout Out  On Our Facebook Page</h3>
+                        <div class="psr-form">
+                            <input id="psr-name" placeholder="Your name">
+                            <input id="psr-location" placeholder="City, Country">
+                            <button onclick="psrAdd()">Submit</button>
+                        </div>
+                        <div id="psr-display"></div>
+                    </div>
+                    <div class="psr-support">
+                        <h3>Support PSR</h3>
+                        <a href="https://ko-fi.com/prodigalsunradio" target="_blank">☕ Buy a Coffee</a>
+                        <a href="https://paypal.me/MediaTek?locale.x=en_GB&country=GB" target="_blank">💸 Donate</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+                <div class="schedule-section">
+                    <h2>PRODIGAL SUN RADIO SCHEDULE</h2>
+                    <div id="dayBar" class="day-bar"></div>
+                    <div class="schedule-window" id="scheduleWindow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="world-clock-panel">
+        <div class="world-clock-title">🌍 PSR WORLD CLOCKS</div>
+        <div class="clock-grid">
+            <div class="clock"><div class="clock-city">🇬🇧 LONDON</div><div class="clock-time" id="london"></div></div>
+            <div class="clock"><div class="clock-city">🇯🇲 KINGSTON</div><div class="clock-time" id="kingston"></div></div>
+            <div class="clock"><div class="clock-city">🇺🇸 NEW YORK</div><div class="clock-time" id="newyork"></div></div>
+            <div class="clock"><div class="clock-city">🇿🇦 JOHANNESBURG</div><div class="clock-time" id="johannesburg"></div></div>
+            <div class="clock"><div class="clock-city">🇯🇵 TOKYO</div><div class="clock-time" id="tokyo"></div></div>
+        </div>
+    </div>
+    <div class="social-panel">
+        <div class="social-title">FOLLOW PSR</div>
+        <div class="social-grid">
+            <a class="social-btn" href="https://x.com/Mkuu_Amani" target="_blank">𝕏</a>
+            <a class="social-btn" href="https://www.facebook.com/profile.php?id=61584234631643" target="_blank">f</a>
+            <a class="social-btn" href="https://www.instagram.com/prodigalsunradio/" target="_blank">◎</a>
+            <a class="social-btn" href="https://www.youtube.com/@prodigalsunradio" target="_blank">▶</a>
+            <a class="social-btn" href="https://www.prodigalsunradio.com/" target="_blank">🌐</a>
+        </div>
+    </div>
 
+    <!-- Still Becoming personal site -->
+    <div class="still-becoming-panel">
+        <a href="https://mkuu-amani.github.io/Bio/" target="_blank" rel="noopener" title="Still Becoming — Mkuu Amani">
+            <img src="https://static.wixstatic.com/media/4657a4_99f85deb5e1d4accb1ea11db3cdcd84f~mv2.png" alt="Still Becoming — Mkuu Amani">
+            <div class="still-becoming-caption">
+                <h3>STILL BECOMING</h3>
+                <p>Mkuu Amani · Living to Learn · Learning To Live</p>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="share-modal" id="shareModal" onclick="if(event.target===this) closeSharePreview()">
+  <div class="share-card">
+    <img id="sharePreviewImg" src="https://static.wixstatic.com/media/4657a4_ec25b8508b3144d7b60f269f9af095df~mv2.png" alt="">
+    <div class="body">
+      <div class="share-note" id="shareNote">Building your story image…</div>
+      <div class="share-actions">
+        <button type="button" class="ghost" onclick="closeSharePreview()">CANCEL</button>
+        <button type="button" onclick="downloadShare('story-png')">STORY PNG</button>
+        <button type="button" onclick="downloadShare('square-png')">SQUARE PNG</button>
+        <button type="button" onclick="downloadShare('story-jpg')">STORY JPG</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="https://player.radioking.io/scripts/iframe.bundle.js"></script>
 <script>
 const API = "https://api.radioking.io/widget/radio/the-channel-x/track/current";
-
-let currentTrack = "";
-
-async function updateTrack(){
-  try{
-    const res = await fetch(API,{cache:"no-store"});
-    const data = await res.json();
-
-    const newTrack = (data.artist || "Live") + " - " + (data.title || "Broadcast");
-
-    if(newTrack !== currentTrack){
-      currentTrack = newTrack;
-
-      const trackEl = document.getElementById("track");
-      trackEl.style.opacity = 0;
-
-      setTimeout(()=>{
-        trackEl.innerText = newTrack;
-        trackEl.style.opacity = 1;
-      },200);
-
-      const cover = document.getElementById("cover");
-
-      setTimeout(()=>{
-        cover.src = data.cover || "https://i.imgur.com/QPevqGi.png";
-      },300);
-    }
-
-  }catch{
-    document.getElementById("track").innerText = "Live Broadcast";
+const DEFAULT_COVER = "https://i.imgur.com/QPevqGi.png";
+const PAGE_URL = "https://www.prodigalsunradio.com/";
+const STATION_LOGO = "https://static.wixstatic.com/media/4657a4_ec25b8508b3144d7b60f269f9af095df~mv2.png";
+let lastApiCover = DEFAULT_COVER;
+let lastArtist = "Prodigal Sun Radio";
+let lastTitle = "Live";
+let storyCanvas = null;
+let squareCanvas = null;
+const DJs = [
+    { name: "DJ Cocomotion", desc: "The Music Mixologist blending the finest house tracks seamlessly.", color: "#FFD700" },
+    { name: "Rudy Cassago", desc: "Global Dance Radio Charts energy every time.", color: "#FF6B00" },
+    { name: "Davy Sims", desc: "A journey through the heart and soul of global music.", color: "#00FFD1" },
+    { name: "Alfiya Glow", desc: "Electronic violin meets radiant house.", color: "#FF00E5" },
+    { name: "Landry DJ", desc: "Global house rhythms with a dancefloor pulse.", color: "#00FF7F" },
+    { name: "Gabriel Deb", desc: "Soulful house curated to perfection.", color: "#FFD1DC" },
+    { name: "Avi Sic", desc: "High-energy club selections.", color: "#FF003C" },
+    { name: "Mkuu Amani", desc: "Fresh tracks and aspiring artists across genres.", color: "#FFD700" },
+    { name: "Shooma", desc: "Sonic journeys to move you inside and out.", color: "#7A5CFF" },
+    { name: "Gabriel Dancer", desc: "Breakthrough of the Year 2023.", color: "#00CFFF" },
+    { name: "Chris Leon", desc: "PSR Super Spotlight feature DJ.", color: "#BF40BF" },
+    { name: "Guided Meditation", desc: "An hour of peace in a chaotic world can be music to the ears.", color: "#BF30BF" },
+    { name: "Chris Brooks", desc: "UK favourites in masterful hands.", color: "#FFA500" }
+];
+let djIndex = 0;
+let detectedDJ = null;
+function setShareNote(msg) {
+  const el = document.getElementById("shareNote");
+  if (el) el.textContent = msg;
+}
+function wrapText(ctx, text, maxWidth) {
+  const words = String(text || "").split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? line + " " + word : word;
+    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; }
+    else line = test;
+  }
+  if (line) lines.push(line);
+  return lines.slice(0, 4);
+}
+function roundRect(ctx, x, y, w, h, r) {
+  const rad = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rad);
+  ctx.arcTo(x + w, y + h, x, y + h, rad);
+  ctx.arcTo(x, y + h, x, y, rad);
+  ctx.arcTo(x, y, x + w, y, rad);
+  ctx.closePath();
+}
+function drawContained(ctx, img, x, y, w, h) {
+  const scale = Math.min(w / img.width, h / img.height);
+  ctx.drawImage(img, x + (w - img.width * scale) / 2, y + (h - img.height * scale) / 2, img.width * scale, img.height * scale);
+}
+function drawCover(ctx, img, x, y, size) {
+  ctx.save();
+  roundRect(ctx, x, y, size, size, 42);
+  ctx.clip();
+  const scale = Math.max(size / img.width, size / img.height);
+  ctx.drawImage(img, x + (size - img.width * scale) / 2, y + (size - img.height * scale) / 2, img.width * scale, img.height * scale);
+  ctx.restore();
+  ctx.save();
+  roundRect(ctx, x, y, size, size, 42);
+  ctx.strokeStyle = "rgba(0,194,255,0.75)";
+  ctx.lineWidth = 8;
+  ctx.stroke();
+  ctx.restore();
+}
+function proxiedImage(url) {
+  if (!url) return url;
+  return "https://images.weserv.nl/?url=" + encodeURIComponent(url.replace(/^https?:\/\//, "")) + "&n=-1";
+}
+function loadStoryImage(src) {
+  return new Promise((resolve) => {
+    if (!src) return resolve(null);
+    const tryLoad = (url, next) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = () => next ? next() : resolve(null);
+      img.src = url;
+    };
+    tryLoad(src, () => tryLoad(proxiedImage(src), null));
+  });
+}
+function paintBackdrop(ctx, W, H) {
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, "#05050a");
+  bg.addColorStop(0.45, "#071428");
+  bg.addColorStop(1, "#1a0530");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+  const glow1 = ctx.createRadialGradient(180, 160, 20, 180, 160, 520);
+  glow1.addColorStop(0, "rgba(0,194,255,0.38)");
+  glow1.addColorStop(1, "rgba(0,194,255,0)");
+  ctx.fillStyle = glow1; ctx.fillRect(0, 0, W, H);
+  const glow2 = ctx.createRadialGradient(W - 160, H - 220, 20, W - 160, H - 220, 560);
+  glow2.addColorStop(0, "rgba(255,0,204,0.22)");
+  glow2.addColorStop(1, "rgba(255,0,204,0)");
+  ctx.fillStyle = glow2; ctx.fillRect(0, 0, W, H);
+}
+async function buildShareImages() {
+  try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
+  const live = typeof getLiveShow === "function" ? getLiveShow() : null;
+  const showName = live && live.Show ? live.Show : "Live Mix";
+  const hostName = live && live.Host ? live.Host : (detectedDJ ? detectedDJ.name : lastArtist);
+  const coverSrc = (live && live.Photo) ? live.Photo : (lastApiCover || DEFAULT_COVER);
+  const [coverImg, logoImg] = await Promise.all([loadStoryImage(coverSrc), loadStoryImage(STATION_LOGO)]);
+  const story = document.createElement("canvas");
+  story.width = 1080; story.height = 1920;
+  const s = story.getContext("2d");
+  paintBackdrop(s, 1080, 1920);
+  s.fillStyle = "rgba(255,0,60,0.95)";
+  s.beginPath(); s.arc(92, 98, 16, 0, Math.PI * 2); s.fill();
+  s.font = "800 36px Orbitron, sans-serif";
+  s.fillStyle = "rgba(255,255,255,0.86)";
+  s.fillText("PSR LIVE", 126, 110);
+  s.textAlign = "right";
+  s.fillText("24/7", 1016, 110);
+  s.textAlign = "left";
+  if (logoImg) drawContained(s, logoImg, 80, 150, 920, 200);
+  else {
+    s.textAlign = "center";
+    s.font = "900 58px Orbitron, sans-serif";
+    s.fillStyle = "#00c2ff";
+    s.fillText("PRODIGAL SUN RADIO", 540, 270);
+    s.textAlign = "left";
+  }
+  const artSize = 560;
+  const artX = (1080 - artSize) / 2;
+  const artY = 370;
+  if (coverImg) drawCover(s, coverImg, artX, artY, artSize);
+  else { s.fillStyle = "#0a0a12"; roundRect(s, artX, artY, artSize, artSize, 42); s.fill(); }
+  s.textAlign = "center";
+  s.font = "800 36px Orbitron, sans-serif";
+  s.fillStyle = "#00c2ff";
+  s.fillText(live ? "NOW ON AIR" : "NOW PLAYING", 540, 1000);
+  s.font = "800 64px Orbitron, sans-serif";
+  s.fillStyle = "#ffffff";
+  const showLines = wrapText(s, showName, 960);
+  showLines.forEach((line, i) => s.fillText(line, 540, 1080 + i * 74));
+  s.font = "700 38px Orbitron, sans-serif";
+  s.fillStyle = "rgba(255,255,255,0.86)";
+  s.fillText("Hosted by " + hostName, 540, 1080 + showLines.length * 74 + 18);
+  s.font = "700 34px Orbitron, sans-serif";
+  s.fillStyle = "#00c2ff";
+  const trackLines = wrapText(s, lastArtist + "  ·  " + lastTitle, 960);
+  trackLines.forEach((line, i) => s.fillText(line, 540, 1380 + i * 46));
+  s.font = "800 32px Orbitron, sans-serif";
+  s.fillStyle = "rgba(255,255,255,0.82)";
+  s.fillText("WHERE THE MIX NEVER SLEEPS", 540, 1640);
+  s.font = "800 38px Orbitron, sans-serif";
+  s.fillStyle = "#00c2ff";
+  s.fillText("prodigalsunradio.com", 540, 1710);
+  s.font = "700 28px Orbitron, sans-serif";
+  s.fillStyle = "rgba(255,255,255,0.55)";
+  s.fillText("House  ·  Dance  ·  Reggae", 540, 1780);
+  const square = document.createElement("canvas");
+  square.width = 1080; square.height = 1080;
+  const q = square.getContext("2d");
+  paintBackdrop(q, 1080, 1080);
+  q.fillStyle = "rgba(255,0,60,0.95)";
+  q.beginPath(); q.arc(80, 78, 14, 0, Math.PI * 2); q.fill();
+  q.font = "800 32px Orbitron, sans-serif";
+  q.fillStyle = "rgba(255,255,255,0.86)";
+  q.fillText("PSR LIVE", 110, 88);
+  q.textAlign = "right";
+  q.fillText("24/7", 1010, 88);
+  q.textAlign = "center";
+  if (logoImg) drawContained(q, logoImg, 240, 110, 600, 130);
+  const sqArt = 430;
+  const sqX = (1080 - sqArt) / 2;
+  if (coverImg) drawCover(q, coverImg, sqX, 250, sqArt);
+  q.font = "800 30px Orbitron, sans-serif";
+  q.fillStyle = "#00c2ff";
+  q.fillText(live ? "NOW ON AIR" : "NOW PLAYING", 540, 730);
+  q.font = "800 46px Orbitron, sans-serif";
+  q.fillStyle = "#fff";
+  const sqShow = wrapText(q, showName, 980);
+  sqShow.forEach((line, i) => q.fillText(line, 540, 790 + i * 54));
+  q.font = "700 30px Orbitron, sans-serif";
+  q.fillStyle = "rgba(255,255,255,0.86)";
+  q.fillText("Hosted by " + hostName, 540, 790 + sqShow.length * 54 + 8);
+  q.font = "800 28px Orbitron, sans-serif";
+  q.fillStyle = "#00c2ff";
+  q.fillText("prodigalsunradio.com", 540, 1010);
+  storyCanvas = story;
+  squareCanvas = square;
+  return story;
+}
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), type, quality));
+}
+function triggerDownload(blob, fileName, fallbackUrl) {
+  const href = blob ? URL.createObjectURL(blob) : fallbackUrl;
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = fileName;
+  a.rel = "noopener";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    a.remove();
+    if (blob) URL.revokeObjectURL(href);
+  }, 800);
+}
+async function sharePSR() {
+  setShareNote("Building your story image…");
+  document.getElementById("shareModal").classList.add("show");
+  try {
+    const canvas = await buildShareImages();
+    document.getElementById("sharePreviewImg").src = canvas.toDataURL("image/png");
+    setShareNote("Saved. Add the image to your Instagram or Facebook story.");
+  } catch (e) {
+    setShareNote("Image ready. Choose a download format.");
   }
 }
-
-setInterval(updateTrack, 10000);
+function closeSharePreview() {
+  document.getElementById("shareModal").classList.remove("show");
+}
+async function downloadShare(kind) {
+  if (!storyCanvas && !squareCanvas) {
+    setShareNote("Wait for the story image to finish.");
+    return;
+  }
+  try {
+    let canvas = storyCanvas;
+    let type = "image/png";
+    let name = "psr-story.png";
+    let quality = undefined;
+    if (kind === "square-png") { canvas = squareCanvas || storyCanvas; name = "psr-square.png"; }
+    if (kind === "story-jpg") { type = "image/jpeg"; name = "psr-story.jpg"; quality = 0.92; }
+    const blob = await canvasToBlob(canvas, type, quality);
+    if (navigator.canShare && blob) {
+      const file = new File([blob], name, { type });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: name });
+          setShareNote("Saved. Add the image to your Instagram or Facebook story.");
+          return;
+        } catch (e) {}
+      }
+    }
+    triggerDownload(blob, name, canvas.toDataURL(type, quality));
+    setShareNote("Saved. Add the image to your Instagram or Facebook story.");
+  } catch (e) {
+    setShareNote("Could not save. Right-click the image and choose Save.");
+  }
+}
+async function updateTrack() {
+    try {
+        const response = await fetch(API, { cache: "no-store" });
+        const data = await response.json();
+        lastArtist = data.artist || "Unknown Artist";
+        lastTitle = data.title || "Unknown Title";
+        lastApiCover = data.cover || DEFAULT_COVER;
+        document.getElementById("track").innerHTML =
+            '<div class="artist">' + escapeHTML(lastArtist) + '</div>' +
+            '<div class="title">' + escapeHTML(lastTitle) + '</div>';
+        applyMainCover();
+        detectDJ(lastArtist);
+    } catch (error) {
+        document.getElementById("track").innerHTML =
+            '<div class="artist">STREAM OFFLINE</div>' +
+            '<div class="title">Please check back shortly</div>';
+        applyMainCover();
+    }
+}
+function detectDJ(text) {
+    const lowerText = String(text || "").toLowerCase();
+    const match = DJs.find(dj => lowerText.includes(dj.name.toLowerCase()));
+    detectedDJ = match || null;
+    updateDJ();
+}
+function updateDJ() {
+    let dj;
+    const status = document.getElementById("dj-status");
+    const box = document.getElementById("dj-box");
+    if (detectedDJ) {
+        dj = detectedDJ;
+        status.textContent = "🔴 ON AIR NOW";
+        status.classList.add("on-air");
+    } else {
+        dj = DJs[djIndex];
+        status.textContent = "DJ SPOTLIGHT";
+        status.classList.remove("on-air");
+        djIndex = (djIndex + 1) % DJs.length;
+    }
+    document.getElementById("dj-name").textContent = dj.name;
+    document.getElementById("dj-desc").textContent = dj.desc;
+    box.style.setProperty("--dj-color", dj.color);
+}
+setInterval(() => { if (!detectedDJ) updateDJ(); }, 15000);
+function updateWorldClocks() {
+    const options = { hour: "numeric", minute: "2-digit", hour12: true };
+    document.getElementById("london").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Europe/London" }).format(new Date());
+    document.getElementById("kingston").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/Jamaica" }).format(new Date());
+    document.getElementById("newyork").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/New_York" }).format(new Date());
+    document.getElementById("johannesburg").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Africa/Johannesburg" }).format(new Date());
+    document.getElementById("tokyo").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Asia/Tokyo" }).format(new Date());
+}
+async function sendMessage() {
+    const name = document.getElementById("name");
+    const message = document.getElementById("message");
+    const status = document.getElementById("status");
+    if (!name.value.trim() || !message.value.trim()) { status.innerText = "Please enter your name and message."; return; }
+    status.innerText = "Sending...";
+    try {
+        await fetch("https://formspree.io/f/mykvabzl", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: name.value, message: message.value })
+        });
+        status.innerText = "Message Sent ✔";
+        name.value = "";
+        message.value = "";
+    } catch (error) {
+        status.innerText = "Unable to send message. Please try again.";
+    }
+}
+function escapeHTML(value) {
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+const digits = document.getElementById('digits');
+const seconds = document.getElementById('seconds');
+const dateEl = document.getElementById('date');
+const panel = document.getElementById('panel');
+function pad(n) { return String(n).padStart(2, "0"); }
+function updateClock() {
+    const now = new Date();
+    digits.textContent = pad(now.getHours()) + ":" + pad(now.getMinutes());
+    seconds.textContent = pad(now.getSeconds());
+    dateEl.textContent = now.toDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+function flashPanel() {
+    panel.classList.remove('flash');
+    void panel.offsetWidth;
+    panel.classList.add('flash');
+    setTimeout(() => panel.classList.remove('flash'), 1200);
+}
+const GUEST_API = "https://script.google.com/macros/s/AKfycbwjgiFCMzDHYdbTUUtmkSdML5oXDIL1zmH5oOQ-g2s49FO2-U-LRs7fGja76dfy7yli_Q/exec";
+let listeners = [];
+let index = 0;
+const badWords = ["fuck","shit","bitch","asshole","bastard","cunt","dick","piss","slut","whore"];
+function hasBadWord(text) { return badWords.some(w => text.toLowerCase().includes(w)); }
+const flags = { "UK":"🇬🇧","USA":"🇺🇸","CANADA":"🇨🇦","JAMAICA":"🇯🇲","TRINIDAD":"🇹🇹","BARBADOS":"🇧🇧","GHANA":"🇬🇭","NIGERIA":"🇳🇬","KENYA":"🇰🇪" };
+function getFlag(loc) {
+    loc = loc.toUpperCase();
+    for (let k in flags) { if (loc.includes(k)) return flags[k]; }
+    return "🌍";
+}
+async function psrAdd() {
+    let name = document.getElementById("psr-name").value.trim();
+    let location = document.getElementById("psr-location").value.trim();
+    if (!name || !location) return;
+    if (hasBadWord(name) || hasBadWord(location)) { alert("Please keep it respectful 🌍"); return; }
+    try {
+        await fetch(GUEST_API, { method: "POST", body: JSON.stringify({ name: name, location: location, flag: getFlag(location) }) });
+        document.getElementById("psr-name").value = "";
+        document.getElementById("psr-location").value = "";
+        await loadListeners();
+        rotate();
+        flashPanel();
+    } catch (err) { console.log(err); alert("Submission failed"); }
+}
+async function loadListeners() {
+    try { const res = await fetch(GUEST_API); listeners = await res.json(); } catch (e) {}
+}
+setInterval(loadListeners, 10000);
+loadListeners();
+function rotate() {
+    const box = document.getElementById("psr-display");
+    if (!listeners.length) { box.innerHTML = "Be the first listener to sign!"; return; }
+    let e = listeners[index];
+    box.innerHTML = `<div>${e.flag} <b>${e.name}</b> listening from ${e.location}</div>`;
+    index++;
+    if (index >= listeners.length) index = 0;
+}
+rotate();
+setInterval(rotate, 15000);
+const SHEET_URL = "https://opensheet.elk.sh/17fzRM4irUYRcemPMpwph_500P3HMWQ1ZzqYpr8DrdQs/Schedule";
+let scheduleData = [];
+let activeDay = null;
+function getTodayName(){ return new Date().toLocaleDateString('en-GB',{weekday:'long'}); }
+function timeToMinutes(t){ const [h,m]=String(t || "00:00").split(':').map(Number); return (h || 0) * 60 + (m || 0); }
+function nowMinutes(){ const d=new Date(); return d.getHours()*60+d.getMinutes(); }
+function isLive(s){
+  if (s.Day !== getTodayName()) return false;
+  const start = timeToMinutes(s.Start);
+  let end = timeToMinutes(s.End);
+  let now = nowMinutes();
+  if (end <= start) end += 24 * 60;
+  if (end > 24 * 60 && now < start) now += 24 * 60;
+  return now >= start && now < end;
+}
+function getLiveShow(){ return scheduleData.find(isLive) || null; }
+function applyMainCover(){
+  const live = getLiveShow();
+  const src = (live && live.Photo) ? live.Photo : lastApiCover;
+  const coverEl = document.getElementById("cover");
+  if (coverEl && coverEl.getAttribute("src") !== src) coverEl.src = src;
+}
+async function loadSchedule(){
+  try{ const r = await fetch(SHEET_URL); scheduleData = await r.json(); }catch(e){ scheduleData = []; }
+  const today = getTodayName();
+  const days = [...new Set(scheduleData.map(s => s.Day))];
+  activeDay = days.includes(today) ? today : (days[0] || null);
+  renderScheduleUI();
+  applyMainCover();
+  setTimeout(scrollToLive, 300);
+}
+function getDays(){ return [...new Set(scheduleData.map(s => s.Day))]; }
+function renderBar(){
+  const days = getDays();
+  document.getElementById('dayBar').innerHTML = days.map(d => `<button class="day-btn ${activeDay===d ? 'active' : ''}" onclick="toggleDay('${d}')">${d}</button>`).join('');
+}
+function toggleDay(day){ activeDay = day; renderScheduleUI(); setTimeout(scrollToLive, 200); }
+function renderSchedule(){
+  const box = document.getElementById('scheduleWindow');
+  const shows = scheduleData.filter(s => s.Day === activeDay);
+  box.innerHTML = shows.map(s => `
+    <div class="card ${isLive(s) ? 'live' : ''}">
+      <img src="${s.Photo || 'https://via.placeholder.com/100'}" class="cover" alt="cover art" />
+      <div style="flex:1">
+        <div class="top-row">
+          <div>
+            <div class="title">${s.Show}</div>
+            <div class="subtle">Hosted by ${s.Host}</div>
+            ${isLive(s) ? `<div class="live-badge">LIVE</div>` : ``}
+          </div>
+          <div class="time">${s.Start} - ${s.End}</div>
+        </div>
+        <div class="subtle" style="margin-top:8px;">${s.Genre || ""}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function scrollToLive(){
+  const box = document.getElementById('scheduleWindow');
+  const liveCard = box.querySelector('.card.live');
+  if(liveCard) liveCard.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+function renderScheduleUI(){ renderBar(); renderSchedule(); }
+setInterval(() => { if(activeDay === getTodayName()) renderSchedule(); applyMainCover(); }, 60000);
 updateTrack();
+setInterval(updateTrack, 15000);
+updateWorldClocks();
+setInterval(updateWorldClocks, 10000);
+updateDJ();
+loadSchedule();
 </script>
-
 </body>
 </html>
