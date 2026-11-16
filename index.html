@@ -54,19 +54,39 @@ body { margin: 0; background: var(--bg-deep); color: var(--text); overflow-x: hi
 #dj-desc { margin-top: 10px; color: #fff; font-size: 14px; line-height: 1.5; }
 #dj-status { display: inline-block; margin-top: 12px; padding: 6px 14px; border-radius: 20px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
 #dj-status.on-air { background: rgba(255,0,60,.15); color: #ff003c; box-shadow: 0 0 15px rgba(255,0,60,.35); }
-<div class="stream custom-player" id="psr-player">
-  <button id="psr-play" aria-label="Play">▶</button>
-  <div class="psr-info">
-    <div id="psr-artist">PRODIGAL SUN RADIO</div>
-    <div id="psr-title">Loading…</div>
-  </div>
-  <div class="psr-vol">
-    <span>VOL</span>
-    <input id="psr-volume" type="range" min="0" max="100" value="70">
-  </div>
-  <audio id="psr-audio" preload="none"></audio>
-</div>
+
+.custom-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  background: #0a0a12;
+  border: 1px solid rgba(0,194,255,0.3);
+  border-radius: 10px;
 }
+.custom-player button {
+  width: 40px !important;
+  height: 40px;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  border-radius: 50%;
+  border: 1px solid #00c2ff;
+  background: transparent;
+  color: #00c2ff;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.custom-player button:hover { background: #00c2ff; color: #000; }
+.psr-info { flex: 1; min-width: 0; }
+#psr-artist { font-size: 11px; letter-spacing: 1px; color: #00c2ff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#psr-title { font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.psr-vol { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #888; }
+.psr-vol input { width: 60px; accent-color: #00c2ff; }
+
 .message-panel input, .message-panel textarea { width: 100%; padding: 14px; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(10,12,20,0.9); color: #fff; font-size: 14px; }
 .message-panel h3 { color: var(--cyan); margin-top: 0; font-size: 20px; }
 button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--magenta)); border: none; border-radius: 10px; font-weight: 800; cursor: pointer; color: #fff; font-size: 16px; }
@@ -112,80 +132,13 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
 .social-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
 .social-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 22px; font-weight: 800; color: white; background: linear-gradient(135deg, var(--blue), var(--cyan), var(--magenta)); box-shadow: 0 8px 20px rgba(0,0,0,0.25); transition: transform .3s ease, box-shadow .3s ease; }
 .social-btn:hover { transform: translateY(-6px) scale(1.08); box-shadow: 0 12px 30px rgba(0,180,255,0.55); }
-
-/* Still Becoming card */
-.still-becoming-panel {
-    margin-top: 28px;
-    padding: 0;
-    border-radius: 18px;
-    overflow: hidden;
-    background: rgba(8,10,18,0.75);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
-}
-.still-becoming-panel:hover {
-    box-shadow: 0 12px 40px rgba(0,194,255,0.35);
-    transform: translateY(-3px);
-}
-.still-becoming-panel a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-.still-becoming-panel img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    max-height: 420px;
-}
-.still-becoming-caption {
-    padding: 18px 22px 22px;
-    text-align: center;
-}
-.still-becoming-caption h3 {
-    margin: 0 0 6px;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: var(--cyan);
-}
-.still-becoming-caption p {
-    margin: 0;
-    font-size: 13px;
-    letter-spacing: 1px;
-    color: var(--text-soft);
-}
-    .custom-player {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 480px;
-  padding: 10px 14px;
-  background: #0a0a12;
-  border: 1px solid rgba(0,194,255,0.3);
-  border-radius: 10px;
-}
-.custom-player button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid #00c2ff;
-  background: transparent;
-  color: #00c2ff;
-  font-size: 16px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.custom-player button:hover { background: #00c2ff; color: #000; }
-.psr-info { flex: 1; min-width: 0; }
-#psr-artist { font-size: 11px; letter-spacing: 1px; color: #00c2ff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#psr-title { font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.psr-vol { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #888; }
-.psr-vol input { width: 60px; accent-color: #00c2ff; }
-
+.still-becoming-panel { margin-top: 28px; padding: 0; border-radius: 18px; overflow: hidden; background: rgba(8,10,18,0.75); backdrop-filter: blur(12px); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.18); transition: box-shadow 0.35s ease, transform 0.35s ease; }
+.still-becoming-panel:hover { box-shadow: 0 12px 40px rgba(0,194,255,0.35); transform: translateY(-3px); }
+.still-becoming-panel a { display: block; text-decoration: none; color: inherit; }
+.still-becoming-panel img { width: 100%; height: auto; display: block; object-fit: cover; max-height: 420px; }
+.still-becoming-caption { padding: 18px 22px 22px; text-align: center; }
+.still-becoming-caption h3 { margin: 0 0 6px; font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--cyan); }
+.still-becoming-caption p { margin: 0; font-size: 13px; letter-spacing: 1px; color: var(--text-soft); }
 .share-modal { display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.72); padding: 24px 16px; align-items: center; justify-content: center; }
 .share-modal.show { display: flex; }
 .share-card { width: min(92vw, 420px); max-height: 92vh; overflow: auto; background: #0b0d16; border: 1px solid var(--border); border-radius: 18px; }
@@ -243,9 +196,18 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
                         <div id="dj-desc"></div>
                         <div id="dj-status">DJ Spotlight</div>
                     </div>
-                   <div class="stream">
-  <iframe src="https://player.radioking.io/the-channel-x/?c=%2305050A&c2=%2300C2FF&f=h&i=1&p=0&s=1&alb=1&li=0&popup=1&plc=0&h=undefined&l=100&v=2&fullsize" style="border-radius: 5px; width: 100%; height: 110px; box-shadow: 0 0 12px rgba(0,0,0,0.3);" frameBorder="0"></iframe>
-</div>
+                    <div class="custom-player" id="psr-player">
+                        <button id="psr-play" aria-label="Play">▶</button>
+                        <div class="psr-info">
+                            <div id="psr-artist">PRODIGAL SUN RADIO</div>
+                            <div id="psr-title">Loading…</div>
+                        </div>
+                        <div class="psr-vol">
+                            <span>VOL</span>
+                            <input id="psr-volume" type="range" min="0" max="100" value="70">
+                        </div>
+                        <audio id="psr-audio" preload="none"></audio>
+                    </div>
                 </div>
             </div>
             <div class="panel video-panel message-panel">
@@ -270,7 +232,7 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
                         <div class="psr-live"><span class="live-dot" style="margin-right:8px;"></span> LIVE</div>
                     </div>
                     <div class="psr-world">
-                        <h3>🌍 Sign The Guest Book, Join Our Family of Listeners Listed Below & Get a Shout Out  On Our Facebook Page</h3>
+                        <h3>🌍 Sign The Guest Book, Join Our Family of Listeners Listed Below & Get a Shout Out On Our Facebook Page</h3>
                         <div class="psr-form">
                             <input id="psr-name" placeholder="Your name">
                             <input id="psr-location" placeholder="City, Country">
@@ -314,8 +276,6 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
             <a class="social-btn" href="https://www.prodigalsunradio.com/" target="_blank">🌐</a>
         </div>
     </div>
-
-    <!-- Still Becoming personal site -->
     <div class="still-becoming-panel">
         <a href="https://mkuu-amani.github.io/Bio/" target="_blank" rel="noopener" title="Still Becoming — Mkuu Amani">
             <img src="https://static.wixstatic.com/media/4657a4_99f85deb5e1d4accb1ea11db3cdcd84f~mv2.png" alt="Still Becoming — Mkuu Amani">
@@ -340,18 +300,16 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
     </div>
   </div>
 </div>
-<script type="text/javascript" src="https://player.radioking.io/scripts/iframe.bundle.js"></script>
-    <script>
+<script>
 (function() {
   const audio = document.getElementById('psr-audio');
   const playBtn = document.getElementById('psr-play');
   const vol = document.getElementById('psr-volume');
   const artistEl = document.getElementById('psr-artist');
   const titleEl = document.getElementById('psr-title');
-
+  if (!audio || !playBtn) return;
   audio.src = 'https://listen.radioking.com/radio/443393/stream/497783';
   audio.volume = 0.7;
-
   playBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play().then(() => playBtn.textContent = '❚❚').catch(() => {});
@@ -360,9 +318,7 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
       playBtn.textContent = '▶';
     }
   });
-
   vol.addEventListener('input', () => audio.volume = vol.value / 100);
-
   async function updateNowPlaying() {
     try {
       const r = await fetch('https://api.radioking.io/widget/radio/the-channel-x/track/current');
@@ -405,81 +361,54 @@ const DJs = [
 ];
 let djIndex = 0;
 let detectedDJ = null;
-function setShareNote(msg) {
-  const el = document.getElementById("shareNote");
-  if (el) el.textContent = msg;
-}
+function setShareNote(msg) { const el = document.getElementById("shareNote"); if (el) el.textContent = msg; }
 function wrapText(ctx, text, maxWidth) {
   const words = String(text || "").split(/\s+/);
-  const lines = [];
-  let line = "";
+  const lines = []; let line = "";
   for (const word of words) {
     const test = line ? line + " " + word : word;
-    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; }
-    else line = test;
+    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; } else line = test;
   }
   if (line) lines.push(line);
   return lines.slice(0, 4);
 }
 function roundRect(ctx, x, y, w, h, r) {
   const rad = Math.min(r, w / 2, h / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + rad, y);
-  ctx.arcTo(x + w, y, x + w, y + h, rad);
-  ctx.arcTo(x + w, y + h, x, y + h, rad);
-  ctx.arcTo(x, y + h, x, y, rad);
-  ctx.arcTo(x, y, x + w, y, rad);
-  ctx.closePath();
+  ctx.beginPath(); ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rad); ctx.arcTo(x + w, y + h, x, y + h, rad);
+  ctx.arcTo(x, y + h, x, y, rad); ctx.arcTo(x, y, x + w, y, rad); ctx.closePath();
 }
 function drawContained(ctx, img, x, y, w, h) {
   const scale = Math.min(w / img.width, h / img.height);
   ctx.drawImage(img, x + (w - img.width * scale) / 2, y + (h - img.height * scale) / 2, img.width * scale, img.height * scale);
 }
 function drawCover(ctx, img, x, y, size) {
-  ctx.save();
-  roundRect(ctx, x, y, size, size, 42);
-  ctx.clip();
+  ctx.save(); roundRect(ctx, x, y, size, size, 42); ctx.clip();
   const scale = Math.max(size / img.width, size / img.height);
   ctx.drawImage(img, x + (size - img.width * scale) / 2, y + (size - img.height * scale) / 2, img.width * scale, img.height * scale);
-  ctx.restore();
-  ctx.save();
-  roundRect(ctx, x, y, size, size, 42);
-  ctx.strokeStyle = "rgba(0,194,255,0.75)";
-  ctx.lineWidth = 8;
-  ctx.stroke();
-  ctx.restore();
+  ctx.restore(); ctx.save(); roundRect(ctx, x, y, size, size, 42);
+  ctx.strokeStyle = "rgba(0,194,255,0.75)"; ctx.lineWidth = 8; ctx.stroke(); ctx.restore();
 }
-function proxiedImage(url) {
-  if (!url) return url;
-  return "https://images.weserv.nl/?url=" + encodeURIComponent(url.replace(/^https?:\/\//, "")) + "&n=-1";
-}
+function proxiedImage(url) { if (!url) return url; return "https://images.weserv.nl/?url=" + encodeURIComponent(url.replace(/^https?:\/\//, "")) + "&n=-1"; }
 function loadStoryImage(src) {
   return new Promise((resolve) => {
     if (!src) return resolve(null);
     const tryLoad = (url, next) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => resolve(img);
-      img.onerror = () => next ? next() : resolve(null);
-      img.src = url;
+      const img = new Image(); img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img); img.onerror = () => next ? next() : resolve(null); img.src = url;
     };
     tryLoad(src, () => tryLoad(proxiedImage(src), null));
   });
 }
 function paintBackdrop(ctx, W, H) {
   const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#05050a");
-  bg.addColorStop(0.45, "#071428");
-  bg.addColorStop(1, "#1a0530");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, W, H);
+  bg.addColorStop(0, "#05050a"); bg.addColorStop(0.45, "#071428"); bg.addColorStop(1, "#1a0530");
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
   const glow1 = ctx.createRadialGradient(180, 160, 20, 180, 160, 520);
-  glow1.addColorStop(0, "rgba(0,194,255,0.38)");
-  glow1.addColorStop(1, "rgba(0,194,255,0)");
+  glow1.addColorStop(0, "rgba(0,194,255,0.38)"); glow1.addColorStop(1, "rgba(0,194,255,0)");
   ctx.fillStyle = glow1; ctx.fillRect(0, 0, W, H);
   const glow2 = ctx.createRadialGradient(W - 160, H - 220, 20, W - 160, H - 220, 560);
-  glow2.addColorStop(0, "rgba(255,0,204,0.22)");
-  glow2.addColorStop(1, "rgba(255,0,204,0)");
+  glow2.addColorStop(0, "rgba(255,0,204,0.22)"); glow2.addColorStop(1, "rgba(255,0,204,0)");
   ctx.fillStyle = glow2; ctx.fillRect(0, 0, W, H);
 }
 async function buildShareImages() {
@@ -489,104 +418,49 @@ async function buildShareImages() {
   const hostName = live && live.Host ? live.Host : (detectedDJ ? detectedDJ.name : lastArtist);
   const coverSrc = (live && live.Photo) ? live.Photo : (lastApiCover || DEFAULT_COVER);
   const [coverImg, logoImg] = await Promise.all([loadStoryImage(coverSrc), loadStoryImage(STATION_LOGO)]);
-  const story = document.createElement("canvas");
-  story.width = 1080; story.height = 1920;
-  const s = story.getContext("2d");
-  paintBackdrop(s, 1080, 1920);
-  s.fillStyle = "rgba(255,0,60,0.95)";
-  s.beginPath(); s.arc(92, 98, 16, 0, Math.PI * 2); s.fill();
-  s.font = "800 36px Orbitron, sans-serif";
-  s.fillStyle = "rgba(255,255,255,0.86)";
-  s.fillText("PSR LIVE", 126, 110);
-  s.textAlign = "right";
-  s.fillText("24/7", 1016, 110);
-  s.textAlign = "left";
+  const story = document.createElement("canvas"); story.width = 1080; story.height = 1920;
+  const s = story.getContext("2d"); paintBackdrop(s, 1080, 1920);
+  s.fillStyle = "rgba(255,0,60,0.95)"; s.beginPath(); s.arc(92, 98, 16, 0, Math.PI * 2); s.fill();
+  s.font = "800 36px Orbitron, sans-serif"; s.fillStyle = "rgba(255,255,255,0.86)";
+  s.fillText("PSR LIVE", 126, 110); s.textAlign = "right"; s.fillText("24/7", 1016, 110); s.textAlign = "left";
   if (logoImg) drawContained(s, logoImg, 80, 150, 920, 200);
-  else {
-    s.textAlign = "center";
-    s.font = "900 58px Orbitron, sans-serif";
-    s.fillStyle = "#00c2ff";
-    s.fillText("PRODIGAL SUN RADIO", 540, 270);
-    s.textAlign = "left";
-  }
-  const artSize = 560;
-  const artX = (1080 - artSize) / 2;
-  const artY = 370;
+  else { s.textAlign = "center"; s.font = "900 58px Orbitron, sans-serif"; s.fillStyle = "#00c2ff"; s.fillText("PRODIGAL SUN RADIO", 540, 270); s.textAlign = "left"; }
+  const artSize = 560; const artX = (1080 - artSize) / 2; const artY = 370;
   if (coverImg) drawCover(s, coverImg, artX, artY, artSize);
   else { s.fillStyle = "#0a0a12"; roundRect(s, artX, artY, artSize, artSize, 42); s.fill(); }
-  s.textAlign = "center";
-  s.font = "800 36px Orbitron, sans-serif";
-  s.fillStyle = "#00c2ff";
+  s.textAlign = "center"; s.font = "800 36px Orbitron, sans-serif"; s.fillStyle = "#00c2ff";
   s.fillText(live ? "NOW ON AIR" : "NOW PLAYING", 540, 1000);
-  s.font = "800 64px Orbitron, sans-serif";
-  s.fillStyle = "#ffffff";
-  const showLines = wrapText(s, showName, 960);
-  showLines.forEach((line, i) => s.fillText(line, 540, 1080 + i * 74));
-  s.font = "700 38px Orbitron, sans-serif";
-  s.fillStyle = "rgba(255,255,255,0.86)";
+  s.font = "800 64px Orbitron, sans-serif"; s.fillStyle = "#ffffff";
+  const showLines = wrapText(s, showName, 960); showLines.forEach((line, i) => s.fillText(line, 540, 1080 + i * 74));
+  s.font = "700 38px Orbitron, sans-serif"; s.fillStyle = "rgba(255,255,255,0.86)";
   s.fillText("Hosted by " + hostName, 540, 1080 + showLines.length * 74 + 18);
-  s.font = "700 34px Orbitron, sans-serif";
-  s.fillStyle = "#00c2ff";
-  const trackLines = wrapText(s, lastArtist + "  ·  " + lastTitle, 960);
-  trackLines.forEach((line, i) => s.fillText(line, 540, 1380 + i * 46));
-  s.font = "800 32px Orbitron, sans-serif";
-  s.fillStyle = "rgba(255,255,255,0.82)";
-  s.fillText("WHERE THE MIX NEVER SLEEPS", 540, 1640);
-  s.font = "800 38px Orbitron, sans-serif";
-  s.fillStyle = "#00c2ff";
-  s.fillText("prodigalsunradio.com", 540, 1710);
-  s.font = "700 28px Orbitron, sans-serif";
-  s.fillStyle = "rgba(255,255,255,0.55)";
-  s.fillText("House  ·  Dance  ·  Reggae", 540, 1780);
-  const square = document.createElement("canvas");
-  square.width = 1080; square.height = 1080;
-  const q = square.getContext("2d");
-  paintBackdrop(q, 1080, 1080);
-  q.fillStyle = "rgba(255,0,60,0.95)";
-  q.beginPath(); q.arc(80, 78, 14, 0, Math.PI * 2); q.fill();
-  q.font = "800 32px Orbitron, sans-serif";
-  q.fillStyle = "rgba(255,255,255,0.86)";
-  q.fillText("PSR LIVE", 110, 88);
-  q.textAlign = "right";
-  q.fillText("24/7", 1010, 88);
-  q.textAlign = "center";
+  s.font = "700 34px Orbitron, sans-serif"; s.fillStyle = "#00c2ff";
+  const trackLines = wrapText(s, lastArtist + "  ·  " + lastTitle, 960); trackLines.forEach((line, i) => s.fillText(line, 540, 1380 + i * 46));
+  s.font = "800 32px Orbitron, sans-serif"; s.fillStyle = "rgba(255,255,255,0.82)"; s.fillText("WHERE THE MIX NEVER SLEEPS", 540, 1640);
+  s.font = "800 38px Orbitron, sans-serif"; s.fillStyle = "#00c2ff"; s.fillText("prodigalsunradio.com", 540, 1710);
+  s.font = "700 28px Orbitron, sans-serif"; s.fillStyle = "rgba(255,255,255,0.55)"; s.fillText("House  ·  Dance  ·  Reggae", 540, 1780);
+  const square = document.createElement("canvas"); square.width = 1080; square.height = 1080;
+  const q = square.getContext("2d"); paintBackdrop(q, 1080, 1080);
+  q.fillStyle = "rgba(255,0,60,0.95)"; q.beginPath(); q.arc(80, 78, 14, 0, Math.PI * 2); q.fill();
+  q.font = "800 32px Orbitron, sans-serif"; q.fillStyle = "rgba(255,255,255,0.86)";
+  q.fillText("PSR LIVE", 110, 88); q.textAlign = "right"; q.fillText("24/7", 1010, 88); q.textAlign = "center";
   if (logoImg) drawContained(q, logoImg, 240, 110, 600, 130);
-  const sqArt = 430;
-  const sqX = (1080 - sqArt) / 2;
+  const sqArt = 430; const sqX = (1080 - sqArt) / 2;
   if (coverImg) drawCover(q, coverImg, sqX, 250, sqArt);
-  q.font = "800 30px Orbitron, sans-serif";
-  q.fillStyle = "#00c2ff";
-  q.fillText(live ? "NOW ON AIR" : "NOW PLAYING", 540, 730);
-  q.font = "800 46px Orbitron, sans-serif";
-  q.fillStyle = "#fff";
-  const sqShow = wrapText(q, showName, 980);
-  sqShow.forEach((line, i) => q.fillText(line, 540, 790 + i * 54));
-  q.font = "700 30px Orbitron, sans-serif";
-  q.fillStyle = "rgba(255,255,255,0.86)";
+  q.font = "800 30px Orbitron, sans-serif"; q.fillStyle = "#00c2ff"; q.fillText(live ? "NOW ON AIR" : "NOW PLAYING", 540, 730);
+  q.font = "800 46px Orbitron, sans-serif"; q.fillStyle = "#fff";
+  const sqShow = wrapText(q, showName, 980); sqShow.forEach((line, i) => q.fillText(line, 540, 790 + i * 54));
+  q.font = "700 30px Orbitron, sans-serif"; q.fillStyle = "rgba(255,255,255,0.86)";
   q.fillText("Hosted by " + hostName, 540, 790 + sqShow.length * 54 + 8);
-  q.font = "800 28px Orbitron, sans-serif";
-  q.fillStyle = "#00c2ff";
-  q.fillText("prodigalsunradio.com", 540, 1010);
-  storyCanvas = story;
-  squareCanvas = square;
-  return story;
+  q.font = "800 28px Orbitron, sans-serif"; q.fillStyle = "#00c2ff"; q.fillText("prodigalsunradio.com", 540, 1010);
+  storyCanvas = story; squareCanvas = square; return story;
 }
-function canvasToBlob(canvas, type, quality) {
-  return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), type, quality));
-}
+function canvasToBlob(canvas, type, quality) { return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), type, quality)); }
 function triggerDownload(blob, fileName, fallbackUrl) {
   const href = blob ? URL.createObjectURL(blob) : fallbackUrl;
-  const a = document.createElement("a");
-  a.href = href;
-  a.download = fileName;
-  a.rel = "noopener";
-  a.style.display = "none";
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    a.remove();
-    if (blob) URL.revokeObjectURL(href);
-  }, 800);
+  const a = document.createElement("a"); a.href = href; a.download = fileName; a.rel = "noopener"; a.style.display = "none";
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { a.remove(); if (blob) URL.revokeObjectURL(href); }, 800);
 }
 async function sharePSR() {
   setShareNote("Building your story image…");
@@ -595,205 +469,124 @@ async function sharePSR() {
     const canvas = await buildShareImages();
     document.getElementById("sharePreviewImg").src = canvas.toDataURL("image/png");
     setShareNote("Saved. Add the image to your Instagram or Facebook story.");
-  } catch (e) {
-    setShareNote("Image ready. Choose a download format.");
-  }
+  } catch (e) { setShareNote("Image ready. Choose a download format."); }
 }
-function closeSharePreview() {
-  document.getElementById("shareModal").classList.remove("show");
-}
+function closeSharePreview() { document.getElementById("shareModal").classList.remove("show"); }
 async function downloadShare(kind) {
-  if (!storyCanvas && !squareCanvas) {
-    setShareNote("Wait for the story image to finish.");
-    return;
-  }
+  if (!storyCanvas && !squareCanvas) { setShareNote("Wait for the story image to finish."); return; }
   try {
-    let canvas = storyCanvas;
-    let type = "image/png";
-    let name = "psr-story.png";
-    let quality = undefined;
+    let canvas = storyCanvas; let type = "image/png"; let name = "psr-story.png"; let quality = undefined;
     if (kind === "square-png") { canvas = squareCanvas || storyCanvas; name = "psr-square.png"; }
     if (kind === "story-jpg") { type = "image/jpeg"; name = "psr-story.jpg"; quality = 0.92; }
     const blob = await canvasToBlob(canvas, type, quality);
     if (navigator.canShare && blob) {
       const file = new File([blob], name, { type });
       if (navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title: name });
-          setShareNote("Saved. Add the image to your Instagram or Facebook story.");
-          return;
-        } catch (e) {}
+        try { await navigator.share({ files: [file], title: name }); setShareNote("Saved. Add the image to your Instagram or Facebook story."); return; } catch (e) {}
       }
     }
     triggerDownload(blob, name, canvas.toDataURL(type, quality));
     setShareNote("Saved. Add the image to your Instagram or Facebook story.");
-  } catch (e) {
-    setShareNote("Could not save. Right-click the image and choose Save.");
-  }
+  } catch (e) { setShareNote("Could not save. Right-click the image and choose Save."); }
 }
 async function updateTrack() {
-    try {
-        const response = await fetch(API, { cache: "no-store" });
-        const data = await response.json();
-        lastArtist = data.artist || "Unknown Artist";
-        lastTitle = data.title || "Unknown Title";
-        lastApiCover = data.cover || DEFAULT_COVER;
-        document.getElementById("track").innerHTML =
-            '<div class="artist">' + escapeHTML(lastArtist) + '</div>' +
-            '<div class="title">' + escapeHTML(lastTitle) + '</div>';
-        applyMainCover();
-        detectDJ(lastArtist);
-    } catch (error) {
-        document.getElementById("track").innerHTML =
-            '<div class="artist">STREAM OFFLINE</div>' +
-            '<div class="title">Please check back shortly</div>';
-        applyMainCover();
-    }
+  try {
+    const response = await fetch(API, { cache: "no-store" });
+    const data = await response.json();
+    lastArtist = data.artist || "Unknown Artist";
+    lastTitle = data.title || "Unknown Title";
+    lastApiCover = data.cover || DEFAULT_COVER;
+    document.getElementById("track").innerHTML = '<div class="artist">' + escapeHTML(lastArtist) + '</div><div class="title">' + escapeHTML(lastTitle) + '</div>';
+    applyMainCover(); detectDJ(lastArtist);
+  } catch (error) {
+    document.getElementById("track").innerHTML = '<div class="artist">STREAM OFFLINE</div><div class="title">Please check back shortly</div>';
+    applyMainCover();
+  }
 }
 function detectDJ(text) {
-    const lowerText = String(text || "").toLowerCase();
-    const match = DJs.find(dj => lowerText.includes(dj.name.toLowerCase()));
-    detectedDJ = match || null;
-    updateDJ();
+  const lowerText = String(text || "").toLowerCase();
+  const match = DJs.find(dj => lowerText.includes(dj.name.toLowerCase()));
+  detectedDJ = match || null; updateDJ();
 }
 function updateDJ() {
-    let dj;
-    const status = document.getElementById("dj-status");
-    const box = document.getElementById("dj-box");
-    if (detectedDJ) {
-        dj = detectedDJ;
-        status.textContent = "🔴 ON AIR NOW";
-        status.classList.add("on-air");
-    } else {
-        dj = DJs[djIndex];
-        status.textContent = "DJ SPOTLIGHT";
-        status.classList.remove("on-air");
-        djIndex = (djIndex + 1) % DJs.length;
-    }
-    document.getElementById("dj-name").textContent = dj.name;
-    document.getElementById("dj-desc").textContent = dj.desc;
-    box.style.setProperty("--dj-color", dj.color);
+  let dj; const status = document.getElementById("dj-status"); const box = document.getElementById("dj-box");
+  if (detectedDJ) { dj = detectedDJ; status.textContent = "🔴 ON AIR NOW"; status.classList.add("on-air"); }
+  else { dj = DJs[djIndex]; status.textContent = "DJ SPOTLIGHT"; status.classList.remove("on-air"); djIndex = (djIndex + 1) % DJs.length; }
+  document.getElementById("dj-name").textContent = dj.name;
+  document.getElementById("dj-desc").textContent = dj.desc;
+  box.style.setProperty("--dj-color", dj.color);
 }
 setInterval(() => { if (!detectedDJ) updateDJ(); }, 15000);
 function updateWorldClocks() {
-    const options = { hour: "numeric", minute: "2-digit", hour12: true };
-    document.getElementById("london").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Europe/London" }).format(new Date());
-    document.getElementById("kingston").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/Jamaica" }).format(new Date());
-    document.getElementById("newyork").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/New_York" }).format(new Date());
-    document.getElementById("johannesburg").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Africa/Johannesburg" }).format(new Date());
-    document.getElementById("tokyo").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Asia/Tokyo" }).format(new Date());
+  const options = { hour: "numeric", minute: "2-digit", hour12: true };
+  document.getElementById("london").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Europe/London" }).format(new Date());
+  document.getElementById("kingston").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/Jamaica" }).format(new Date());
+  document.getElementById("newyork").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "America/New_York" }).format(new Date());
+  document.getElementById("johannesburg").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Africa/Johannesburg" }).format(new Date());
+  document.getElementById("tokyo").textContent = new Intl.DateTimeFormat("en-US", { ...options, timeZone: "Asia/Tokyo" }).format(new Date());
 }
 async function sendMessage() {
-    const name = document.getElementById("name");
-    const message = document.getElementById("message");
-    const status = document.getElementById("status");
-    if (!name.value.trim() || !message.value.trim()) { status.innerText = "Please enter your name and message."; return; }
-    status.innerText = "Sending...";
-    try {
-        await fetch("https://formspree.io/f/mykvabzl", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: name.value, message: message.value })
-        });
-        status.innerText = "Message Sent ✔";
-        name.value = "";
-        message.value = "";
-    } catch (error) {
-        status.innerText = "Unable to send message. Please try again.";
-    }
+  const name = document.getElementById("name"); const message = document.getElementById("message"); const status = document.getElementById("status");
+  if (!name.value.trim() || !message.value.trim()) { status.innerText = "Please enter your name and message."; return; }
+  status.innerText = "Sending...";
+  try {
+    await fetch("https://formspree.io/f/mykvabzl", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.value, message: message.value }) });
+    status.innerText = "Message Sent ✔"; name.value = ""; message.value = "";
+  } catch (error) { status.innerText = "Unable to send message. Please try again."; }
 }
-function escapeHTML(value) {
-    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-const digits = document.getElementById('digits');
-const seconds = document.getElementById('seconds');
-const dateEl = document.getElementById('date');
-const panel = document.getElementById('panel');
+function escapeHTML(value) { return String(value).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "&#039;"); }
+const digits = document.getElementById('digits'); const seconds = document.getElementById('seconds'); const dateEl = document.getElementById('date'); const panel = document.getElementById('panel');
 function pad(n) { return String(n).padStart(2, "0"); }
-function updateClock() {
-    const now = new Date();
-    digits.textContent = pad(now.getHours()) + ":" + pad(now.getMinutes());
-    seconds.textContent = pad(now.getSeconds());
-    dateEl.textContent = now.toDateString();
-}
-setInterval(updateClock, 1000);
-updateClock();
-function flashPanel() {
-    panel.classList.remove('flash');
-    void panel.offsetWidth;
-    panel.classList.add('flash');
-    setTimeout(() => panel.classList.remove('flash'), 1200);
-}
+function updateClock() { const now = new Date(); digits.textContent = pad(now.getHours()) + ":" + pad(now.getMinutes()); seconds.textContent = pad(now.getSeconds()); dateEl.textContent = now.toDateString(); }
+setInterval(updateClock, 1000); updateClock();
+function flashPanel() { panel.classList.remove('flash'); void panel.offsetWidth; panel.classList.add('flash'); setTimeout(() => panel.classList.remove('flash'), 1200); }
 const GUEST_API = "https://script.google.com/macros/s/AKfycbwjgiFCMzDHYdbTUUtmkSdML5oXDIL1zmH5oOQ-g2s49FO2-U-LRs7fGja76dfy7yli_Q/exec";
-let listeners = [];
-let index = 0;
+let listeners = []; let index = 0;
 const badWords = ["fuck","shit","bitch","asshole","bastard","cunt","dick","piss","slut","whore"];
 function hasBadWord(text) { return badWords.some(w => text.toLowerCase().includes(w)); }
 const flags = { "UK":"🇬🇧","USA":"🇺🇸","CANADA":"🇨🇦","JAMAICA":"🇯🇲","TRINIDAD":"🇹🇹","BARBADOS":"🇧🇧","GHANA":"🇬🇭","NIGERIA":"🇳🇬","KENYA":"🇰🇪" };
-function getFlag(loc) {
-    loc = loc.toUpperCase();
-    for (let k in flags) { if (loc.includes(k)) return flags[k]; }
-    return "🌍";
-}
+function getFlag(loc) { loc = loc.toUpperCase(); for (let k in flags) { if (loc.includes(k)) return flags[k]; } return "🌍"; }
 async function psrAdd() {
-    let name = document.getElementById("psr-name").value.trim();
-    let location = document.getElementById("psr-location").value.trim();
-    if (!name || !location) return;
-    if (hasBadWord(name) || hasBadWord(location)) { alert("Please keep it respectful 🌍"); return; }
-    try {
-        await fetch(GUEST_API, { method: "POST", body: JSON.stringify({ name: name, location: location, flag: getFlag(location) }) });
-        document.getElementById("psr-name").value = "";
-        document.getElementById("psr-location").value = "";
-        await loadListeners();
-        rotate();
-        flashPanel();
-    } catch (err) { console.log(err); alert("Submission failed"); }
+  let name = document.getElementById("psr-name").value.trim(); let location = document.getElementById("psr-location").value.trim();
+  if (!name || !location) return;
+  if (hasBadWord(name) || hasBadWord(location)) { alert("Please keep it respectful 🌍"); return; }
+  try {
+    await fetch(GUEST_API, { method: "POST", body: JSON.stringify({ name: name, location: location, flag: getFlag(location) }) });
+    document.getElementById("psr-name").value = ""; document.getElementById("psr-location").value = "";
+    await loadListeners(); rotate(); flashPanel();
+  } catch (err) { console.log(err); alert("Submission failed"); }
 }
-async function loadListeners() {
-    try { const res = await fetch(GUEST_API); listeners = await res.json(); } catch (e) {}
-}
-setInterval(loadListeners, 10000);
-loadListeners();
+async function loadListeners() { try { const res = await fetch(GUEST_API); listeners = await res.json(); } catch (e) {} }
+setInterval(loadListeners, 10000); loadListeners();
 function rotate() {
-    const box = document.getElementById("psr-display");
-    if (!listeners.length) { box.innerHTML = "Be the first listener to sign!"; return; }
-    let e = listeners[index];
-    box.innerHTML = `<div>${e.flag} <b>${e.name}</b> listening from ${e.location}</div>`;
-    index++;
-    if (index >= listeners.length) index = 0;
+  const box = document.getElementById("psr-display");
+  if (!listeners.length) { box.innerHTML = "Be the first listener to sign!"; return; }
+  let e = listeners[index]; box.innerHTML = `<div>${e.flag} <b>${e.name}</b> listening from ${e.location}</div>`;
+  index++; if (index >= listeners.length) index = 0;
 }
-rotate();
-setInterval(rotate, 15000);
+rotate(); setInterval(rotate, 15000);
 const SHEET_URL = "https://opensheet.elk.sh/17fzRM4irUYRcemPMpwph_500P3HMWQ1ZzqYpr8DrdQs/Schedule";
-let scheduleData = [];
-let activeDay = null;
+let scheduleData = []; let activeDay = null;
 function getTodayName(){ return new Date().toLocaleDateString('en-GB',{weekday:'long'}); }
 function timeToMinutes(t){ const [h,m]=String(t || "00:00").split(':').map(Number); return (h || 0) * 60 + (m || 0); }
 function nowMinutes(){ const d=new Date(); return d.getHours()*60+d.getMinutes(); }
 function isLive(s){
   if (s.Day !== getTodayName()) return false;
-  const start = timeToMinutes(s.Start);
-  let end = timeToMinutes(s.End);
-  let now = nowMinutes();
-  if (end <= start) end += 24 * 60;
-  if (end > 24 * 60 && now < start) now += 24 * 60;
+  const start = timeToMinutes(s.Start); let end = timeToMinutes(s.End); let now = nowMinutes();
+  if (end <= start) end += 24 * 60; if (end > 24 * 60 && now < start) now += 24 * 60;
   return now >= start && now < end;
 }
 function getLiveShow(){ return scheduleData.find(isLive) || null; }
 function applyMainCover(){
-  const live = getLiveShow();
-  const src = (live && live.Photo) ? live.Photo : lastApiCover;
+  const live = getLiveShow(); const src = (live && live.Photo) ? live.Photo : lastApiCover;
   const coverEl = document.getElementById("cover");
   if (coverEl && coverEl.getAttribute("src") !== src) coverEl.src = src;
 }
 async function loadSchedule(){
   try{ const r = await fetch(SHEET_URL); scheduleData = await r.json(); }catch(e){ scheduleData = []; }
-  const today = getTodayName();
-  const days = [...new Set(scheduleData.map(s => s.Day))];
+  const today = getTodayName(); const days = [...new Set(scheduleData.map(s => s.Day))];
   activeDay = days.includes(today) ? today : (days[0] || null);
-  renderScheduleUI();
-  applyMainCover();
-  setTimeout(scrollToLive, 300);
+  renderScheduleUI(); applyMainCover(); setTimeout(scrollToLive, 300);
 }
 function getDays(){ return [...new Set(scheduleData.map(s => s.Day))]; }
 function renderBar(){
@@ -828,12 +621,9 @@ function scrollToLive(){
 }
 function renderScheduleUI(){ renderBar(); renderSchedule(); }
 setInterval(() => { if(activeDay === getTodayName()) renderSchedule(); applyMainCover(); }, 60000);
-updateTrack();
-setInterval(updateTrack, 15000);
-updateWorldClocks();
-setInterval(updateWorldClocks, 10000);
-updateDJ();
-loadSchedule();
+updateTrack(); setInterval(updateTrack, 15000);
+updateWorldClocks(); setInterval(updateWorldClocks, 10000);
+updateDJ(); loadSchedule();
 </script>
 </body>
 </html>
