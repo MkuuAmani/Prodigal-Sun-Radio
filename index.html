@@ -534,7 +534,7 @@ async function sendMessage() {
     status.innerText = "Message Sent ✔"; name.value = ""; message.value = "";
   } catch (error) { status.innerText = "Unable to send message. Please try again."; }
 }
-function escapeHTML(value) { return String(value).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "&#039;"); }
+function escapeHTML(value) { return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
 const digits = document.getElementById('digits'); const seconds = document.getElementById('seconds'); const dateEl = document.getElementById('date'); const panel = document.getElementById('panel');
 function pad(n) { return String(n).padStart(2, "0"); }
 function updateClock() { const now = new Date(); digits.textContent = pad(now.getHours()) + ":" + pad(now.getMinutes()); seconds.textContent = pad(now.getSeconds()); dateEl.textContent = now.toDateString(); }
@@ -627,3 +627,4 @@ updateDJ(); loadSchedule();
 </script>
 </body>
 </html>
+
