@@ -54,13 +54,18 @@ body { margin: 0; background: var(--bg-deep); color: var(--text); overflow-x: hi
 #dj-desc { margin-top: 10px; color: #fff; font-size: 14px; line-height: 1.5; }
 #dj-status { display: inline-block; margin-top: 12px; padding: 6px 14px; border-radius: 20px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.75); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
 #dj-status.on-air { background: rgba(255,0,60,.15); color: #ff003c; box-shadow: 0 0 15px rgba(255,0,60,.35); }
-.stream {
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.15);
+<div class="stream custom-player" id="psr-player">
+  <button id="psr-play" aria-label="Play">▶</button>
+  <div class="psr-info">
+    <div id="psr-artist">PRODIGAL SUN RADIO</div>
+    <div id="psr-title">Loading…</div>
+  </div>
+  <div class="psr-vol">
+    <span>VOL</span>
+    <input id="psr-volume" type="range" min="0" max="100" value="70">
+  </div>
+  <audio id="psr-audio" preload="none"></audio>
+</div>
 }
 .message-panel input, .message-panel textarea { width: 100%; padding: 14px; margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(10,12,20,0.9); color: #fff; font-size: 14px; }
 .message-panel h3 { color: var(--cyan); margin-top: 0; font-size: 20px; }
@@ -153,6 +158,33 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
     letter-spacing: 1px;
     color: var(--text-soft);
 }
+    .custom-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+  padding: 10px 14px;
+  background: #0a0a12;
+  border: 1px solid rgba(0,194,255,0.3);
+  border-radius: 10px;
+}
+.custom-player button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #00c2ff;
+  background: transparent;
+  color: #00c2ff;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.custom-player button:hover { background: #00c2ff; color: #000; }
+.psr-info { flex: 1; min-width: 0; }
+#psr-artist { font-size: 11px; letter-spacing: 1px; color: #00c2ff; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#psr-title { font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.psr-vol { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #888; }
+.psr-vol input { width: 60px; accent-color: #00c2ff; }
 
 .share-modal { display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,.72); padding: 24px 16px; align-items: center; justify-content: center; }
 .share-modal.show { display: flex; }
@@ -309,6 +341,43 @@ button { margin-top: 16px; width: 100%; padding: 16px; background: linear-gradie
   </div>
 </div>
 <script type="text/javascript" src="https://player.radioking.io/scripts/iframe.bundle.js"></script>
+    <script>
+(function() {
+  const audio = document.getElementById('psr-audio');
+  const playBtn = document.getElementById('psr-play');
+  const vol = document.getElementById('psr-volume');
+  const artistEl = document.getElementById('psr-artist');
+  const titleEl = document.getElementById('psr-title');
+
+  audio.src = 'https://listen.radioking.com/radio/443393/stream/497783';
+  audio.volume = 0.7;
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().then(() => playBtn.textContent = '❚❚').catch(() => {});
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+  });
+
+  vol.addEventListener('input', () => audio.volume = vol.value / 100);
+
+  async function updateNowPlaying() {
+    try {
+      const r = await fetch('https://api.radioking.io/widget/radio/the-channel-x/track/current');
+      const d = await r.json();
+      artistEl.textContent = d.artist || 'PRODIGAL SUN RADIO';
+      titleEl.textContent = d.title || 'Live';
+    } catch (e) {
+      artistEl.textContent = 'PRODIGAL SUN RADIO';
+      titleEl.textContent = 'Live';
+    }
+  }
+  updateNowPlaying();
+  setInterval(updateNowPlaying, 20000);
+})();
+</script>
 <script>
 const API = "https://api.radioking.io/widget/radio/the-channel-x/track/current";
 const DEFAULT_COVER = "https://i.imgur.com/QPevqGi.png";
